@@ -67,9 +67,6 @@ def solve_energy_optimization(
 
     prob += battery_energy[23] == request.battery.initial_energy_kwh, "end_of_day_neutrality"
 
-    for h in range(24):
-        prob += charge[h] * discharge[h] == 0, f"mutual_exclusion_{h}"
-
     solver = pulp.PULP_CBC_CMD(msg=False, timeLimit=25)
     prob.solve(solver)
 
