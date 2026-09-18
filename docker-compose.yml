@@ -1,5 +1,6 @@
-# A minimal Docker Compose file: just the GridWise service.
-# Optional environment variables are read from .env (excluded from git).
+# A single-service Docker Compose file. The GridWise image exposes
+# both the FastAPI backend (port 8000) and the static frontend
+# (port 8001); one container, one `docker compose up`.
 
 services:
   gridwise:
@@ -12,7 +13,8 @@ services:
     env_file:
       - .env
     ports:
-      - "8000:8000"
+      - "8000:8000"   # FastAPI (POST /optimize-energy, GET /health)
+      - "8001:8001"   # static frontend (UI served from project root)
     healthcheck:
       test: ["CMD", "curl", "-fsS", "http://localhost:8000/health"]
       interval: 30s

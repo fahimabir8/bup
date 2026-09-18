@@ -87,6 +87,26 @@ All optional except when using a real provider. See `.env.example`.
 | `GRIDWISE_REQUIRE_PROD_PROVIDER` | unset | set `true` to refuse `mock` at startup |
 | `GRIDWISE_SOLVER_TIMEOUT` | `25` | MILP time limit (s) |
 
+## Docker
+
+```bash
+docker compose up --build
+```
+
+Both the API (`http://localhost:8000`) and the static UI
+(`http://localhost:8001/frontend/`) come up in a single container.
+`tini` + `entrypoint.sh` run the two services and shut them down
+together on `docker compose down`.
+
+```bash
+# or run the image directly:
+docker build -t gridwise:latest .
+docker run --rm -p 8000:8000 -p 8001:8001 --env-file .env gridwise:latest
+```
+
+Non-root user, healthcheck on `/health` every 30 s, no secrets baked
+into the image.
+
 ## Notes
 
 - The mock LLM is a rule engine for tests only — never use it in
