@@ -6,7 +6,7 @@ requires-python = ">=3.11"
 dependencies = []
 
 [tool.uv]
-workspace = ["backend"]
+workspace = { members = ["backend"] }
 dev-dependencies = [
     "ruff>=0.9.0",
     "mypy>=1.14.0",
