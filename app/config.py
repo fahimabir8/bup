@@ -10,11 +10,89 @@ from __future__ import annotations
 import os
 from dataclasses import dataclass, field
 from functools import lru_cache
+from pathlib import Path
 from typing import Optional
 
 
 # LLM prompt version is part of cache keys and observability
 INTERPRETER_PROMPT_VERSION = "1.0"
+
+# Name of the dotenv file the loader should read by default. Set the
+# ``DOTENV_PATH`` env var to override (useful for tests).
+_DOTENV_FILENAME = ".env"
+
+
+def _load_dotenv(path: Optional[str] = None) -> None:
+    """Populate ``os.environ`` from a ``.env`` file.
+
+    Minimal implementation: only sets variables that are not already
+    present in the environment, so explicit shell exports and Docker
+    ``env_file`` always win. Handles ``KEY=value``, ``export KEY=value``,
+    blank lines, and ``#`` comments. Quoted values have their quotes
+    stripped; inline ``#`` comments are tolerated after a space.
+
+    This avoids a runtime dependency on ``python-dotenv`` while still
+    letting ``python -m uvicorn app.main:app`` pick up ``.env`` without
+    requiring ``set -a; . ./.env; set +a`` shenanigans.
+    """
+
+    target = path or os.getenv("DOTENV_PATH")
+    if not target:
+        # Default: look for a .env in the current working directory or
+        # the project root (the directory containing this package).
+        cwd_candidate = Path.cwd() / _DOTENV_FILENAME
+        if cwd_candidate.is_file():
+            target = str(cwd_candidate)
+        else:
+            # ``app/`` lives at <project>/app; the project root is its parent.
+            project_root = Path(__file__).resolve().parent.parent
+            root_candidate = project_root / _DOTENV_FILENAME
+            if root_candidate.is_file():
+                target = str(root_candidate)
+
+    if not target:
+        return
+
+    dotenv_path = Path(target)
+    if not dotenv_path.is_file():
+        return
+
+    try:
+        text = dotenv_path.read_text(encoding="utf-8")
+    except OSError:
+        return
+
+    for raw_line in text.splitlines():
+        line = raw_line.strip()
+        if not line or line.startswith("#"):
+            continue
+        if line.lower().startswith("export "):
+            line = line[7:].lstrip()
+        if "=" not in line:
+            continue
+        key, _, value = line.partition("=")
+        key = key.strip()
+        if not key:
+            continue
+        # Drop inline comments after a whitespace-separated ``#``.
+        if " #" in value:
+            value = value.split(" #", 1)[0]
+        value = value.strip()
+        # Strip a single matching pair of surrounding quotes.
+        if (
+            len(value) >= 2
+            and value[0] == value[-1]
+            and value[0] in {'"', "'"}
+        ):
+            value = value[1:-1]
+        # Never overwrite an explicitly-set environment variable.
+        if key not in os.environ:
+            os.environ[key] = value
+
+
+# Load .env at import time so configuration is consistent across
+# uvicorn / pytest / direct script invocation. Idempotent and safe.
+_load_dotenv()
 
 
 def _getenv_str(name: str, default: str) -> str:
@@ -53,11 +131,14 @@ def _getenv_bool(name: str, default: bool) -> bool:
 class LLMConfig:
     """Provider-agnostic LLM configuration.
 
-    The `provider` field picks the implementation; the remaining fields
-    are only consumed by the OpenAI-compatible provider.
+    The ``provider`` field picks the implementation. Supported values
+    are ``"gemini"``, ``"openai_compatible"``, and ``"mock"``. The
+    remaining fields are only consumed by the network-backed providers;
+    ``base_url`` is optional for Gemini (defaults to the public Google
+    endpoint) and required for ``openai_compatible``.
     """
 
-    provider: str = "openai_compatible"
+    provider: str = "gemini"
     base_url: str = ""
     api_key: str = ""
     model: str = ""
@@ -112,10 +193,25 @@ def get_settings() -> Settings:
 
 
 def _build_settings() -> Settings:
+    provider = _getenv_str("LLM_PROVIDER", "gemini").lower()
+    # Key precedence: GEMINI_API_KEY for the gemini provider, otherwise
+    # fall back to the generic LLM_API_KEY. This lets users paste their
+    # Google AI Studio key under its natural name.
+    if provider == "gemini":
+        api_key = _getenv_str("GEMINI_API_KEY", "") or _getenv_str(
+            "LLM_API_KEY", ""
+        )
+    else:
+        api_key = _getenv_str("LLM_API_KEY", "") or _getenv_str(
+            "GEMINI_API_KEY", ""
+        )
+
     llm = LLMConfig(
-        provider=_getenv_str("LLM_PROVIDER", "openai_compatible"),
-        base_url=_getenv_str("LLM_BASE_URL", ""),
-        api_key=_getenv_str("LLM_API_KEY", ""),
+        provider=provider,
+        base_url=_getenv_str("LLM_BASE_URL", "") or _getenv_str(
+            "GEMINI_BASE_URL", ""
+        ),
+        api_key=api_key,
         model=_getenv_str("LLM_MODEL", ""),
         timeout_seconds=_getenv_float("LLM_TIMEOUT_SECONDS", 12.0),
         max_retries=_getenv_int("LLM_MAX_RETRIES", 1),

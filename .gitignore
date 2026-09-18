@@ -31,7 +31,6 @@ env/
 Thumbs.db
 
 # Environment
-venv
 .env
 .env.local
 .env.*.local

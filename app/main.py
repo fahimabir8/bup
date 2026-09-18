@@ -8,6 +8,7 @@ from contextlib import asynccontextmanager
 from typing import AsyncIterator
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from app import __version__
@@ -67,6 +68,16 @@ def create_app() -> FastAPI:
         version=__version__,
         description="LLM-Assisted Smart Campus Energy Optimization API",
         lifespan=lifespan,
+    )
+
+    # Permissive CORS so the bundled static frontend (typically served
+    # from a different port during development) can call the API
+    # without a reverse proxy. Tighten allow_origins for production.
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["*"],
+        allow_methods=["GET", "POST", "OPTIONS"],
+        allow_headers=["*"],
     )
 
     app.include_router(health_router)

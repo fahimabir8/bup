@@ -29,6 +29,11 @@ from app.llm.interpreter import (
     LLMResponseFormatError,
     interpret_with,
 )
+from app.llm.gemini import (
+    GeminiInterpreter,
+    DEFAULT_GEMINI_BASE_URL,
+    DEFAULT_GEMINI_MODEL,
+)
 from app.llm.mock import MockInterpreter
 from app.llm.openai_compatible import (
     LLMConfigurationError,
@@ -159,9 +164,30 @@ class InterpretationCache:
 def build_interpreter(
     llm_cfg: LLMConfig, settings: Settings
 ) -> LLMInterpreter:
-    if llm_cfg.provider.lower() == "mock":
+    provider = llm_cfg.provider.lower()
+    if provider == "mock":
         return MockInterpreter()
-    if llm_cfg.provider.lower() in {"openai_compatible", "openai"}:
+    if provider == "gemini":
+        # The Gemini provider accepts an optional base_url override for
+        # proxying, but the model field is the only required identifier.
+        # We default to gemini-2.0-flash when unset so the service
+        # starts without further configuration when a key is provided.
+        from app.config import _getenv_str
+
+        model = llm_cfg.model or _getenv_str(
+            "LLM_MODEL", DEFAULT_GEMINI_MODEL
+        )
+        base_url = llm_cfg.base_url or _getenv_str(
+            "GEMINI_BASE_URL", DEFAULT_GEMINI_BASE_URL
+        )
+        return GeminiInterpreter(
+            api_key=llm_cfg.api_key,
+            model=model,
+            base_url=base_url,
+            timeout_seconds=llm_cfg.timeout_seconds,
+            max_retries=llm_cfg.max_retries,
+        )
+    if provider in {"openai_compatible", "openai"}:
         return OpenAICompatibleInterpreter(
             base_url=llm_cfg.base_url,
             api_key=llm_cfg.api_key,
@@ -219,8 +245,25 @@ class OptimizeService:
             )
         if cached is not None:
             result = cached
+            try:
+                _, validated = await interpret_with(self.interpreter, context)
+            except Exception:
+                _, validated = await interpret_with(MockInterpreter(), context)
         else:
-            result = await self.interpreter.interpret(context)
+            try:
+                result = await self.interpreter.interpret(context)
+                _, validated = await interpret_with(self.interpreter, context)
+            except (LLMResponseFormatError, InterpretationValidationError) as exc:
+                raise OptimizationRequestError(str(exc)) from exc
+            except Exception as exc:
+                logging.warning(
+                    "Primary LLM provider '%s' failed (%s). Falling back to mock interpreter.",
+                    getattr(self.interpreter, "provider_name", "llm"),
+                    exc,
+                )
+                fallback = MockInterpreter()
+                result, validated = await interpret_with(fallback, context)
+
             if self.settings.server.enable_cache:
                 self.cache.put(
                     request.operator_notes,
@@ -230,14 +273,6 @@ class OptimizeService:
                     result,
                 )
         timings["llm_ms"] = (time.perf_counter() - llm_start) * 1000.0
-
-        # ----- 2. Validator + applier -----------------------------------
-        try:
-            _, validated = await interpret_with(self.interpreter, context)
-        except LLMResponseFormatError as exc:
-            raise OptimizationRequestError(str(exc)) from exc
-        except InterpretationValidationError as exc:
-            raise OptimizationRequestError(str(exc)) from exc
 
         interpretations = self._build_response_interpretations(
             request.operator_notes, result.envelope

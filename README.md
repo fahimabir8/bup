@@ -84,6 +84,32 @@ For local development without an LLM API key, use the `mock` provider
 interprets the official public sample notes; it is **never** the
 production default.
 
+### Using Google Gemini
+
+GridWise ships with a **native** Gemini interpreter
+(`GeminiInterpreter`) that talks to Google's `generateContent` REST
+API directly — there is no OpenAI dependency. To enable it, paste
+your Google AI Studio key into `.env`:
+
+```bash
+# .env
+LLM_PROVIDER=gemini
+GEMINI_API_KEY=your-google-ai-studio-key
+LLM_MODEL=gemini-2.0-flash        # any Gemini model id works
+```
+
+Optional overrides:
+
+```bash
+GEMINI_BASE_URL=https://generativelanguage.googleapis.com  # default
+```
+
+The interpreter forces JSON output via
+`generationConfig.response_mime_type="application/json"` and expects
+the structured envelope described in the system prompt. Any current
+Gemini model works (`gemini-2.0-flash`, `gemini-2.0-flash-lite`,
+`gemini-1.5-flash`, `gemini-1.5-pro`, ...).
+
 ---
 
 ## Endpoints
@@ -212,10 +238,12 @@ gridwise/
 
 | Variable | Default | Notes |
 |----------|---------|-------|
-| `LLM_PROVIDER` | `openai_compatible` | `openai_compatible` or `mock`. Production deployments must NOT use `mock`. |
-| `LLM_BASE_URL` | (empty) | e.g. `https://api.openai.com/v1`, `http://localhost:11434/v1`. |
-| `LLM_API_KEY` | (empty) | Bearer token. Never commit. |
-| `LLM_MODEL` | (empty) | e.g. `gpt-4o-mini`, `llama3.1`. |
+| `LLM_PROVIDER` | `gemini` | `gemini`, `openai_compatible`, or `mock`. Production deployments must NOT use `mock`. |
+| `GEMINI_API_KEY` | (empty) | Google AI Studio API key. Used when `LLM_PROVIDER=gemini`. Never commit. |
+| `GEMINI_BASE_URL` | (empty) | Optional override for the Gemini API host. Defaults to `https://generativelanguage.googleapis.com`. |
+| `LLM_BASE_URL` | (empty) | Required only when `LLM_PROVIDER=openai_compatible`. |
+| `LLM_API_KEY` | (empty) | Bearer token for non-Gemini providers. |
+| `LLM_MODEL` | `gemini-2.0-flash` | e.g. `gemini-2.0-flash`, `gemini-1.5-pro`, `gpt-4o-mini`, `llama3.1`. |
 | `LLM_TIMEOUT_SECONDS` | `12` | Per-call HTTP timeout. |
 | `LLM_MAX_RETRIES` | `1` | Retries on transient errors. |
 | `LLM_CACHE_MAX_ENTRIES` | `256` | TTL+LRU cache for interpretation results. |
