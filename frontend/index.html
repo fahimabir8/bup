@@ -3,205 +3,548 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GridWise · Smart Campus Energy Console</title>
+  <title>GridWise — Campus Energy Console</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
+
 <body>
+
+  <!-- TOP NAV -->
   <header class="topbar">
+
     <div class="brand">
-      <span class="brand-mark"></span>
-      <div class="brand-text">
-        <h1>GridWise</h1>
-        <p class="tagline">LLM-assisted campus energy optimization</p>
+      <div class="brand-symbol">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+
+      <div>
+        <div class="brand-name">GRIDWISE</div>
+        <div class="brand-subtitle">Campus energy console</div>
       </div>
     </div>
-    <div class="connection">
-      <label class="conn-label" for="api-base">API endpoint</label>
-      <div class="conn-row">
-        <input id="api-base" type="text" spellcheck="false"
-               value="http://localhost:8000" />
-        <button id="btn-health" class="btn btn-ghost" type="button">
-          Health check
+
+    <div class="topbar-right">
+
+      <div class="endpoint">
+        <span class="endpoint-label">API</span>
+
+        <input
+          id="api-base"
+          type="text"
+          spellcheck="false"
+          value="http://localhost:8000"
+        />
+
+        <button
+          id="btn-health"
+          class="text-btn"
+          type="button"
+        >
+          Check
         </button>
-        <span id="health-dot" class="dot dot-unknown" title="Unknown"></span>
+
+        <span
+          id="health-dot"
+          class="health-dot dot-unknown"
+          title="Unknown"
+        ></span>
       </div>
+
     </div>
+
   </header>
 
-  <main class="layout">
-    <!-- LEFT COLUMN: input form ---------------------------------------- -->
-    <section class="col col-input">
 
-      <article class="panel">
-        <header class="panel-head">
-          <h2>Scenario</h2>
-          <button id="btn-example" class="btn btn-ghost" type="button">
-            Load example
-          </button>
-        </header>
-        <div class="panel-body">
-          <label class="field">
-            <span class="field-label">scenario_id</span>
-            <input id="scenario-id" type="text"
-                   value="GRID-DEMO-01" spellcheck="false" />
-          </label>
-        </div>
-      </article>
+  <!-- MAIN WORKSPACE -->
+  <main class="workspace">
 
-      <article class="panel">
-        <header class="panel-head">
-          <h2>Operator notes <span class="hint">(1 – 3)</span></h2>
-          <button id="btn-add-note" class="btn btn-ghost" type="button">
-            + Add note
-          </button>
-        </header>
-        <div id="notes-list" class="panel-body notes-list">
-          <!-- note rows injected by app.js -->
-        </div>
-      </article>
+    <!-- ================================================================
+         CONFIGURATION RAIL
+         ================================================================ -->
 
-      <article class="panel">
-        <header class="panel-head"><h2>Battery</h2></header>
-        <div class="panel-body grid-3">
-          <label class="field">
-            <span class="field-label">capacity (kWh)</span>
-            <input id="bat-capacity" type="number" min="0" step="0.1"
-                   value="240" />
-          </label>
-          <label class="field">
-            <span class="field-label">initial energy (kWh)</span>
-            <input id="bat-initial" type="number" min="0" step="0.1"
-                   value="120" />
-          </label>
-          <label class="field">
-            <span class="field-label">minimum energy (kWh)</span>
-            <input id="bat-min" type="number" min="0" step="0.1"
-                   value="30" />
-          </label>
-          <label class="field">
-            <span class="field-label">max charge (kWh/h)</span>
-            <input id="bat-max-charge" type="number" min="0" step="0.1"
-                   value="60" />
-          </label>
-          <label class="field">
-            <span class="field-label">max discharge (kWh/h)</span>
-            <input id="bat-max-discharge" type="number" min="0" step="0.1"
-                   value="60" />
-          </label>
-        </div>
-      </article>
+    <aside class="sidebar">
 
-      <article class="panel">
-        <header class="panel-head">
-          <h2>24-hour horizon</h2>
-          <div class="head-actions">
-            <button id="btn-zero" class="btn btn-ghost btn-sm"
-                    type="button">Zero</button>
-            <button id="btn-flat" class="btn btn-ghost btn-sm"
-                    type="button">Flat</button>
-          </div>
-        </header>
-        <div class="panel-body table-wrap">
-          <table class="hours-table">
-            <thead>
-              <tr>
-                <th class="col-hour">hr</th>
-                <th>demand (kWh)</th>
-                <th>solar (kWh)</th>
-                <th>tariff (BDT/kWh)</th>
-              </tr>
-            </thead>
-            <tbody id="hours-body"><!-- rows injected --></tbody>
-          </table>
-        </div>
-      </article>
-
-      <div class="action-bar">
-        <button id="btn-run" class="btn btn-primary" type="button">
-          Run optimization
-        </button>
-        <span id="run-status" class="status">Idle.</span>
+      <div class="sidebar-heading">
+        <span>01</span>
+        <strong>Configure</strong>
       </div>
-    </section>
 
-    <!-- RIGHT COLUMN: results ----------------------------------------- -->
-    <section class="col col-output">
-      <article id="results-panel" class="panel hidden">
-        <header class="panel-head">
-          <h2>Result</h2>
-          <button id="btn-download" class="btn btn-ghost btn-sm"
-                  type="button">Download JSON</button>
-        </header>
-        <div class="panel-body">
-          <div class="kpi-row">
-            <div class="kpi">
-              <div class="kpi-label">Total grid</div>
-              <div class="kpi-value" id="kpi-grid">–</div>
-              <div class="kpi-unit">kWh</div>
-            </div>
-            <div class="kpi">
-              <div class="kpi-label">Total cost</div>
-              <div class="kpi-value" id="kpi-cost">–</div>
-              <div class="kpi-unit">BDT</div>
-            </div>
-            <div class="kpi">
-              <div class="kpi-label">Peak grid</div>
-              <div class="kpi-value" id="kpi-peak">–</div>
-              <div class="kpi-unit">kWh / hr</div>
-            </div>
+
+      <!-- SCENARIO -->
+      <section class="config-section">
+
+        <div class="section-number">A</div>
+
+        <div class="config-content">
+
+          <div class="config-title-row">
+            <h2>Scenario</h2>
+
+            <button
+              id="btn-example"
+              class="text-btn"
+              type="button"
+            >
+              Example
+            </button>
           </div>
 
-          <p class="plan-summary" id="plan-summary"></p>
+          <label class="field">
+            <span class="field-label">Scenario ID</span>
 
-          <h3 class="section-h">Schedule</h3>
-          <div class="chart-wrap">
-            <svg id="chart" viewBox="0 0 720 320"
-                 preserveAspectRatio="none"
-                 aria-label="24-hour energy schedule chart"></svg>
-            <div class="chart-legend">
-              <span class="lg lg-solar"></span>solar used
-              <span class="lg lg-battery"></span>battery
-              <span class="lg lg-grid"></span>grid import
-              <span class="lg lg-soc"></span>battery SOC
-            </div>
+            <input
+              id="scenario-id"
+              type="text"
+              value="GRID-DEMO-01"
+              spellcheck="false"
+            />
+          </label>
+
+        </div>
+
+      </section>
+
+
+      <!-- OPERATOR NOTES -->
+      <section class="config-section">
+
+        <div class="section-number">B</div>
+
+        <div class="config-content">
+
+          <div class="config-title-row">
+
+            <h2>Operator notes</h2>
+
+            <button
+              id="btn-add-note"
+              class="text-btn"
+              type="button"
+            >
+              + Add
+            </button>
+
           </div>
 
-          <h3 class="section-h">Directive interpretations</h3>
-          <div id="directives" class="directives"></div>
+          <div id="notes-list" class="notes-list"></div>
 
-          <h3 class="section-h">Hourly plan</h3>
-          <div class="table-wrap">
-            <table class="plan-table">
+        </div>
+
+      </section>
+
+
+      <!-- BATTERY -->
+      <section class="config-section">
+
+        <div class="section-number">C</div>
+
+        <div class="config-content">
+
+          <h2>Battery</h2>
+
+          <div class="battery-grid">
+
+            <label class="field">
+              <span class="field-label">Capacity</span>
+              <div class="input-with-unit">
+                <input
+                  id="bat-capacity"
+                  type="number"
+                  min="0"
+                  step="0.1"
+                  value="240"
+                />
+                <span>kWh</span>
+              </div>
+            </label>
+
+            <label class="field">
+              <span class="field-label">Initial</span>
+              <div class="input-with-unit">
+                <input
+                  id="bat-initial"
+                  type="number"
+                  min="0"
+                  step="0.1"
+                  value="120"
+                />
+                <span>kWh</span>
+              </div>
+            </label>
+
+            <label class="field">
+              <span class="field-label">Minimum</span>
+              <div class="input-with-unit">
+                <input
+                  id="bat-min"
+                  type="number"
+                  min="0"
+                  step="0.1"
+                  value="30"
+                />
+                <span>kWh</span>
+              </div>
+            </label>
+
+            <label class="field">
+              <span class="field-label">Max charge</span>
+              <div class="input-with-unit">
+                <input
+                  id="bat-max-charge"
+                  type="number"
+                  min="0"
+                  step="0.1"
+                  value="60"
+                />
+                <span>kWh/h</span>
+              </div>
+            </label>
+
+            <label class="field">
+              <span class="field-label">Max discharge</span>
+              <div class="input-with-unit">
+                <input
+                  id="bat-max-discharge"
+                  type="number"
+                  min="0"
+                  step="0.1"
+                  value="60"
+                />
+                <span>kWh/h</span>
+              </div>
+            </label>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- 24 HOUR DATA -->
+      <section class="config-section horizon-section">
+
+        <div class="section-number">D</div>
+
+        <div class="config-content">
+
+          <div class="config-title-row">
+            <div>
+              <h2>24-hour horizon</h2>
+              <div class="section-help">
+                Demand · solar · tariff
+              </div>
+            </div>
+
+            <div class="mini-actions">
+              <button
+                id="btn-zero"
+                class="text-btn"
+                type="button"
+              >
+                Zero
+              </button>
+
+              <button
+                id="btn-flat"
+                class="text-btn"
+                type="button"
+              >
+                Flat
+              </button>
+            </div>
+
+          </div>
+
+          <div class="hours-scroll">
+
+            <table class="hours-table">
+
               <thead>
                 <tr>
-                  <th>hr</th>
-                  <th>grid (kWh)</th>
-                  <th>solar (kWh)</th>
-                  <th>battery action</th>
-                  <th>battery (kWh)</th>
-                  <th>SOC after (kWh)</th>
+                  <th>HR</th>
+                  <th>Demand</th>
+                  <th>Solar</th>
+                  <th>Tariff</th>
                 </tr>
               </thead>
-              <tbody id="plan-body"></tbody>
+
+              <tbody id="hours-body"></tbody>
+
             </table>
+
           </div>
+
         </div>
+
+      </section>
+
+
+      <!-- RUN -->
+      <div class="run-area">
+
+        <button
+          id="btn-run"
+          class="run-btn"
+          type="button"
+        >
+          <span>Run optimization</span>
+          <span class="run-arrow">↗</span>
+        </button>
+
+        <span id="run-status" class="status">
+          Idle.
+        </span>
+
+      </div>
+
+    </aside>
+
+
+    <!-- ================================================================
+         OUTPUT CANVAS
+         ================================================================ -->
+
+    <section class="content">
+
+      <!-- EMPTY -->
+      <article
+        id="empty-state"
+        class="empty-state"
+      >
+
+        <div class="empty-grid"></div>
+
+        <div class="empty-content">
+
+          <div class="empty-kicker">
+            ENERGY / 24H
+          </div>
+
+          <h1>Ready for an optimization run.</h1>
+
+          <p>
+            Configure the campus scenario on the left and run the
+            optimizer to generate the hourly energy schedule.
+          </p>
+
+          <div class="empty-line">
+            <span></span>
+            <span>GRIDWISE</span>
+          </div>
+
+        </div>
+
       </article>
 
-      <article id="empty-state" class="panel placeholder">
-        <div class="placeholder-inner">
-          <div class="placeholder-mark"></div>
-          <p>No result yet. Configure a scenario on the left and click
-             <strong>Run optimization</strong>.</p>
-        </div>
+
+      <!-- RESULTS -->
+      <article
+        id="results-panel"
+        class="results hidden"
+      >
+
+        <!-- RESULT HEADER -->
+        <header class="result-header">
+
+          <div>
+
+            <div class="result-kicker">
+              OPTIMIZATION RESULT
+            </div>
+
+            <h1>Energy schedule</h1>
+
+          </div>
+
+          <button
+            id="btn-download"
+            class="download-btn"
+            type="button"
+          >
+            Download JSON
+          </button>
+
+        </header>
+
+
+        <!-- METRICS -->
+        <section class="metrics">
+
+          <div class="metric">
+
+            <div class="metric-label">
+              Total grid
+            </div>
+
+            <div class="metric-main">
+              <span id="kpi-grid">–</span>
+              <small>kWh</small>
+            </div>
+
+          </div>
+
+
+          <div class="metric">
+
+            <div class="metric-label">
+              Total cost
+            </div>
+
+            <div class="metric-main">
+              <span id="kpi-cost">–</span>
+              <small>BDT</small>
+            </div>
+
+          </div>
+
+
+          <div class="metric">
+
+            <div class="metric-label">
+              Peak grid
+            </div>
+
+            <div class="metric-main">
+              <span id="kpi-peak">–</span>
+              <small>kWh / hr</small>
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- SUMMARY -->
+        <section class="summary-row">
+
+          <span class="summary-label">PLAN</span>
+
+          <p id="plan-summary"></p>
+
+        </section>
+
+
+        <!-- CHART -->
+        <section class="result-section chart-section">
+
+          <div class="result-section-header">
+
+            <div>
+              <span class="result-index">01</span>
+              <h2>Daily schedule</h2>
+            </div>
+
+            <div class="chart-legend">
+
+              <span>
+                <i class="lg lg-solar"></i>
+                Solar
+              </span>
+
+              <span>
+                <i class="lg lg-battery"></i>
+                Battery
+              </span>
+
+              <span>
+                <i class="lg lg-grid"></i>
+                Grid
+              </span>
+
+              <span>
+                <i class="lg lg-soc"></i>
+                SOC
+              </span>
+
+            </div>
+
+          </div>
+
+          <div class="chart-container">
+            <svg
+              id="chart"
+              viewBox="0 0 720 320"
+              preserveAspectRatio="none"
+              aria-label="24-hour energy schedule chart"
+            ></svg>
+          </div>
+
+        </section>
+
+
+        <!-- DIRECTIVES -->
+        <section class="result-section">
+
+          <div class="result-section-header">
+
+            <div>
+              <span class="result-index">02</span>
+              <h2>Directive interpretation</h2>
+            </div>
+
+          </div>
+
+          <div
+            id="directives"
+            class="directives"
+          ></div>
+
+        </section>
+
+
+        <!-- PLAN -->
+        <section class="result-section plan-section">
+
+          <div class="result-section-header">
+
+            <div>
+              <span class="result-index">03</span>
+              <h2>Hourly plan</h2>
+            </div>
+
+          </div>
+
+          <div class="plan-scroll">
+
+            <table class="plan-table">
+
+              <thead>
+
+                <tr>
+                  <th>HR</th>
+                  <th>GRID</th>
+                  <th>SOLAR</th>
+                  <th>BATTERY ACTION</th>
+                  <th>BATTERY</th>
+                  <th>SOC AFTER</th>
+                </tr>
+
+              </thead>
+
+              <tbody id="plan-body"></tbody>
+
+            </table>
+
+          </div>
+
+        </section>
+
       </article>
+
     </section>
+
   </main>
 
+
   <footer class="footer">
-    <span>GridWise frontend · vanilla JS, no build step</span>
+    GridWise · Campus energy optimization
   </footer>
 
+
   <script src="app.js"></script>
+
 </body>
 </html>
