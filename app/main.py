@@ -1,44 +1,89 @@
-from fastapi import FastAPI, HTTPException
-from app.models import OptimizeEnergyRequest, OptimizeEnergyResponse
-from app.interpreter import interpret_operator_notes
-from app.optimizer import solve_gridwise_optimization
+"""FastAPI application factory and lifespan management."""
 
-app = FastAPI(
-    title="GridWise Microgrid Energy Optimization Service",
-    description="LLM-Assisted Microgrid Optimizer for BUP CSE Fest 2026 Preliminary",
-    version="2.0"
+from __future__ import annotations
+
+import logging
+import os
+from contextlib import asynccontextmanager
+from typing import AsyncIterator
+
+from fastapi import FastAPI
+from fastapi.responses import JSONResponse
+
+from app import __version__
+from app.api.health import router as health_router
+from app.api.optimize import router as optimize_router
+from app.config import (
+    get_settings,
+    require_production_provider,
+    reset_settings_cache,
 )
+from app.services.optimize_service import OptimizeService
 
 
-@app.get("/")
-def read_root():
-    return {
-        "service": "GridWise Energy Optimizer",
-        "status": "healthy",
-        "endpoint": "POST /optimize-energy"
-    }
+def _configure_logging(level: str) -> None:
+    logging.basicConfig(
+        level=level.upper(),
+        format="%(asctime)s %(levelname)s %(name)s %(message)s",
+    )
 
 
-@app.get("/health")
-def health_check():
-    return {"status": "ok"}
+@asynccontextmanager
+async def lifespan(app: FastAPI) -> AsyncIterator[None]:
+    settings = get_settings()
+    _configure_logging(settings.server.log_level)
 
+    if os.getenv("GRIDWISE_REQUIRE_PROD_PROVIDER", "").lower() in {"1", "true"}:
+        require_production_provider(settings)
 
-@app.post("/optimize-energy", response_model=OptimizeEnergyResponse)
-def optimize_energy(request: OptimizeEnergyRequest):
+    if settings.llm.provider.lower() != "mock":
+        # Production / real LLM provider: initialize eagerly so failures
+        # surface at startup.
+        try:
+            service = OptimizeService.from_settings(settings)
+        except Exception:  # noqa: BLE001
+            logging.exception("Failed to initialize LLM interpreter")
+            raise
+    else:
+        service = OptimizeService.with_mock(settings)
+
+    app.state.optimize_service = service
+    app.state.settings = settings
+    logging.info(
+        "GridWise ready: provider=%s model=%s",
+        settings.llm.provider,
+        settings.llm.model or "(default)",
+    )
     try:
-        # 1. Interpret natural-language operator notes into structured directives
-        directive_interpretations = interpret_operator_notes(
-            operator_notes=request.operator_notes,
-            battery_capacity=request.battery.capacity_kwh
+        yield
+    finally:
+        # Reset cached settings between test runs.
+        reset_settings_cache()
+
+
+def create_app() -> FastAPI:
+    app = FastAPI(
+        title="GridWise",
+        version=__version__,
+        description="LLM-Assisted Smart Campus Energy Optimization API",
+        lifespan=lifespan,
+    )
+
+    app.include_router(health_router)
+    app.include_router(optimize_router)
+
+    @app.exception_handler(Exception)
+    async def _safe_exception_handler(_, exc: Exception):  # noqa: ANN001
+        logging.exception("Unhandled error")
+        return JSONResponse(
+            status_code=500,
+            content={"detail": "Internal server error"},
         )
 
-        # 2. Solve LP optimization model given inputs & interpreted directives
-        response = solve_gridwise_optimization(
-            request=request,
-            directive_interpretations=directive_interpretations
-        )
+    return app
 
-        return response
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+
+app = create_app()
+
+
+__all__ = ["app", "create_app", "lifespan"]

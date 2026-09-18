@@ -1,0 +1,2968 @@
+{
+  "metadata": {
+    "label": "SELF-GENERATED TEST CASE",
+    "notice": "NOT OFFICIAL ORGANIZER SAMPLE",
+    "description": "Deterministic synthetic scenarios produced by scripts/generate_samples.py. Used to validate the GridWise service when official samples are unavailable."
+  },
+  "cases": [
+    {
+      "id": "SYN-SOLAR-01",
+      "tag": "solar_reduction",
+      "description": "Paraphrased solar reduction using 13:00-15:00 format.",
+      "input": {
+        "scenario_id": "SYN-SOLAR-01",
+        "operator_notes": [
+          "PV production will fall to one-fifth between 13:00 and 15:00."
+        ],
+        "hours": [
+          {
+            "hour": 0,
+            "demand_kwh": 80.81,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 6.08
+          },
+          {
+            "hour": 1,
+            "demand_kwh": 78.91,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 5.69
+          },
+          {
+            "hour": 2,
+            "demand_kwh": 88.53,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 6.47
+          },
+          {
+            "hour": 3,
+            "demand_kwh": 89.98,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 6.42
+          },
+          {
+            "hour": 4,
+            "demand_kwh": 87.17,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 5.97
+          },
+          {
+            "hour": 5,
+            "demand_kwh": 90.77,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 6.16
+          },
+          {
+            "hour": 6,
+            "demand_kwh": 87.75,
+            "solar_kwh": 4.55,
+            "tariff_bdt_per_kwh": 7.71
+          },
+          {
+            "hour": 7,
+            "demand_kwh": 89.12,
+            "solar_kwh": 3.61,
+            "tariff_bdt_per_kwh": 7.72
+          },
+          {
+            "hour": 8,
+            "demand_kwh": 90.88,
+            "solar_kwh": 35.7,
+            "tariff_bdt_per_kwh": 11.65
+          },
+          {
+            "hour": 9,
+            "demand_kwh": 95.78,
+            "solar_kwh": 67.23,
+            "tariff_bdt_per_kwh": 13.27
+          },
+          {
+            "hour": 10,
+            "demand_kwh": 91.61,
+            "solar_kwh": 106.4,
+            "tariff_bdt_per_kwh": 11.35
+          },
+          {
+            "hour": 11,
+            "demand_kwh": 99.58,
+            "solar_kwh": 162.97,
+            "tariff_bdt_per_kwh": 14.38
+          },
+          {
+            "hour": 12,
+            "demand_kwh": 90.7,
+            "solar_kwh": 189.35,
+            "tariff_bdt_per_kwh": 10.78
+          },
+          {
+            "hour": 13,
+            "demand_kwh": 91.8,
+            "solar_kwh": 189.5,
+            "tariff_bdt_per_kwh": 11.27
+          },
+          {
+            "hour": 14,
+            "demand_kwh": 90.38,
+            "solar_kwh": 155.47,
+            "tariff_bdt_per_kwh": 10.86
+          },
+          {
+            "hour": 15,
+            "demand_kwh": 96.56,
+            "solar_kwh": 110.9,
+            "tariff_bdt_per_kwh": 13.58
+          },
+          {
+            "hour": 16,
+            "demand_kwh": 91.66,
+            "solar_kwh": 53.0,
+            "tariff_bdt_per_kwh": 11.97
+          },
+          {
+            "hour": 17,
+            "demand_kwh": 101.62,
+            "solar_kwh": 35.82,
+            "tariff_bdt_per_kwh": 12.39
+          },
+          {
+            "hour": 18,
+            "demand_kwh": 98.87,
+            "solar_kwh": 1.12,
+            "tariff_bdt_per_kwh": 27.65
+          },
+          {
+            "hour": 19,
+            "demand_kwh": 100.51,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 28.27
+          },
+          {
+            "hour": 20,
+            "demand_kwh": 96.54,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 27.81
+          },
+          {
+            "hour": 21,
+            "demand_kwh": 92.82,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 27.42
+          },
+          {
+            "hour": 22,
+            "demand_kwh": 93.18,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 27.86
+          },
+          {
+            "hour": 23,
+            "demand_kwh": 80.0,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 5.8
+          }
+        ],
+        "battery": {
+          "capacity_kwh": 295.29,
+          "initial_energy_kwh": 120.6,
+          "minimum_energy_kwh": 58.03,
+          "max_charge_kwh_per_hour": 76.2,
+          "max_discharge_kwh_per_hour": 76.2
+        }
+      }
+    },
+    {
+      "id": "SYN-SOLAR-02",
+      "tag": "solar_reduction",
+      "description": "Solar reduction using '20% of normal solar' phrasing.",
+      "input": {
+        "scenario_id": "SYN-SOLAR-02",
+        "operator_notes": [
+          "Panel maintenance means only 20% of normal solar should be counted from 1 PM through 2 PM."
+        ],
+        "hours": [
+          {
+            "hour": 0,
+            "demand_kwh": 76.48,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 5.65
+          },
+          {
+            "hour": 1,
+            "demand_kwh": 83.12,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 6.12
+          },
+          {
+            "hour": 2,
+            "demand_kwh": 80.58,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 5.67
+          },
+          {
+            "hour": 3,
+            "demand_kwh": 87.87,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 6.21
+          },
+          {
+            "hour": 4,
+            "demand_kwh": 88.58,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 6.11
+          },
+          {
+            "hour": 5,
+            "demand_kwh": 87.97,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 5.88
+          },
+          {
+            "hour": 6,
+            "demand_kwh": 91.78,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 8.12
+          },
+          {
+            "hour": 7,
+            "demand_kwh": 92.56,
+            "solar_kwh": 12.03,
+            "tariff_bdt_per_kwh": 8.07
+          },
+          {
+            "hour": 8,
+            "demand_kwh": 88.42,
+            "solar_kwh": 19.79,
+            "tariff_bdt_per_kwh": 10.67
+          },
+          {
+            "hour": 9,
+            "demand_kwh": 94.16,
+            "solar_kwh": 63.0,
+            "tariff_bdt_per_kwh": 12.62
+          },
+          {
+            "hour": 10,
+            "demand_kwh": 95.69,
+            "solar_kwh": 109.21,
+            "tariff_bdt_per_kwh": 12.98
+          },
+          {
+            "hour": 11,
+            "demand_kwh": 95.07,
+            "solar_kwh": 157.39,
+            "tariff_bdt_per_kwh": 12.58
+          },
+          {
+            "hour": 12,
+            "demand_kwh": 98.79,
+            "solar_kwh": 197.41,
+            "tariff_bdt_per_kwh": 14.02
+          },
+          {
+            "hour": 13,
+            "demand_kwh": 97.22,
+            "solar_kwh": 196.39,
+            "tariff_bdt_per_kwh": 13.44
+          },
+          {
+            "hour": 14,
+            "demand_kwh": 93.26,
+            "solar_kwh": 150.57,
+            "tariff_bdt_per_kwh": 12.01
+          },
+          {
+            "hour": 15,
+            "demand_kwh": 91.13,
+            "solar_kwh": 107.65,
+            "tariff_bdt_per_kwh": 11.41
+          },
+          {
+            "hour": 16,
+            "demand_kwh": 89.27,
+            "solar_kwh": 61.14,
+            "tariff_bdt_per_kwh": 11.01
+          },
+          {
+            "hour": 17,
+            "demand_kwh": 105.0,
+            "solar_kwh": 26.79,
+            "tariff_bdt_per_kwh": 13.74
+          },
+          {
+            "hour": 18,
+            "demand_kwh": 102.5,
+            "solar_kwh": 17.3,
+            "tariff_bdt_per_kwh": 28.38
+          },
+          {
+            "hour": 19,
+            "demand_kwh": 100.22,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 28.22
+          },
+          {
+            "hour": 20,
+            "demand_kwh": 96.92,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 27.88
+          },
+          {
+            "hour": 21,
+            "demand_kwh": 95.75,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 28.0
+          },
+          {
+            "hour": 22,
+            "demand_kwh": 91.1,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 27.44
+          },
+          {
+            "hour": 23,
+            "demand_kwh": 82.26,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 6.03
+          }
+        ],
+        "battery": {
+          "capacity_kwh": 187.04,
+          "initial_energy_kwh": 100.03,
+          "minimum_energy_kwh": 21.88,
+          "max_charge_kwh_per_hour": 65.63,
+          "max_discharge_kwh_per_hour": 65.63
+        }
+      }
+    },
+    {
+      "id": "SYN-SOLAR-03",
+      "tag": "solar_reduction",
+      "description": "Solar reduction with percentage-decrease phrasing.",
+      "input": {
+        "scenario_id": "SYN-SOLAR-03",
+        "operator_notes": [
+          "Expect an 80 percent decrease in rooftop generation during 1-3 PM."
+        ],
+        "hours": [
+          {
+            "hour": 0,
+            "demand_kwh": 84.79,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 6.48
+          },
+          {
+            "hour": 1,
+            "demand_kwh": 81.52,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 5.96
+          },
+          {
+            "hour": 2,
+            "demand_kwh": 86.07,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 6.22
+          },
+          {
+            "hour": 3,
+            "demand_kwh": 88.09,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 6.23
+          },
+          {
+            "hour": 4,
+            "demand_kwh": 84.65,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 5.71
+          },
+          {
+            "hour": 5,
+            "demand_kwh": 84.91,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 5.58
+          },
+          {
+            "hour": 6,
+            "demand_kwh": 91.63,
+            "solar_kwh": 12.51,
+            "tariff_bdt_per_kwh": 8.1
+          },
+          {
+            "hour": 7,
+            "demand_kwh": 88.12,
+            "solar_kwh": 8.84,
+            "tariff_bdt_per_kwh": 7.62
+          },
+          {
+            "hour": 8,
+            "demand_kwh": 91.81,
+            "solar_kwh": 30.78,
+            "tariff_bdt_per_kwh": 12.03
+          },
+          {
+            "hour": 9,
+            "demand_kwh": 97.76,
+            "solar_kwh": 63.45,
+            "tariff_bdt_per_kwh": 14.06
+          },
+          {
+            "hour": 10,
+            "demand_kwh": 98.21,
+            "solar_kwh": 101.35,
+            "tariff_bdt_per_kwh": 13.99
+          },
+          {
+            "hour": 11,
+            "demand_kwh": 91.06,
+            "solar_kwh": 151.26,
+            "tariff_bdt_per_kwh": 10.97
+          },
+          {
+            "hour": 12,
+            "demand_kwh": 90.82,
+            "solar_kwh": 197.12,
+            "tariff_bdt_per_kwh": 10.83
+          },
+          {
+            "hour": 13,
+            "demand_kwh": 92.1,
+            "solar_kwh": 187.5,
+            "tariff_bdt_per_kwh": 11.39
+          },
+          {
+            "hour": 14,
+            "demand_kwh": 97.77,
+            "solar_kwh": 157.35,
+            "tariff_bdt_per_kwh": 13.81
+          },
+          {
+            "hour": 15,
+            "demand_kwh": 89.11,
+            "solar_kwh": 114.85,
+            "tariff_bdt_per_kwh": 10.6
+          },
+          {
+            "hour": 16,
+            "demand_kwh": 90.24,
+            "solar_kwh": 66.19,
+            "tariff_bdt_per_kwh": 11.4
+          },
+          {
+            "hour": 17,
+            "demand_kwh": 97.97,
+            "solar_kwh": 18.77,
+            "tariff_bdt_per_kwh": 10.93
+          },
+          {
+            "hour": 18,
+            "demand_kwh": 96.88,
+            "solar_kwh": 1.36,
+            "tariff_bdt_per_kwh": 27.26
+          },
+          {
+            "hour": 19,
+            "demand_kwh": 99.37,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 28.05
+          },
+          {
+            "hour": 20,
+            "demand_kwh": 94.33,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 27.37
+          },
+          {
+            "hour": 21,
+            "demand_kwh": 94.83,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 27.82
+          },
+          {
+            "hour": 22,
+            "demand_kwh": 96.21,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 28.47
+          },
+          {
+            "hour": 23,
+            "demand_kwh": 84.19,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 6.22
+          }
+        ],
+        "battery": {
+          "capacity_kwh": 394.76,
+          "initial_energy_kwh": 192.21,
+          "minimum_energy_kwh": 67.85,
+          "max_charge_kwh_per_hour": 66.74,
+          "max_discharge_kwh_per_hour": 66.74
+        }
+      }
+    },
+    {
+      "id": "SYN-RESERVE-01",
+      "tag": "minimum_battery_reserve",
+      "description": "Battery reserve with explicit kWh value.",
+      "input": {
+        "scenario_id": "SYN-RESERVE-01",
+        "operator_notes": [
+          "Keep at least 120 kWh stored from 6 PM to 9 PM."
+        ],
+        "hours": [
+          {
+            "hour": 0,
+            "demand_kwh": 75.67,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 5.57
+          },
+          {
+            "hour": 1,
+            "demand_kwh": 80.21,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 5.83
+          },
+          {
+            "hour": 2,
+            "demand_kwh": 78.92,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 5.5
+          },
+          {
+            "hour": 3,
+            "demand_kwh": 83.57,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 5.78
+          },
+          {
+            "hour": 4,
+            "demand_kwh": 90.03,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 6.25
+          },
+          {
+            "hour": 5,
+            "demand_kwh": 91.07,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 6.19
+          },
+          {
+            "hour": 6,
+            "demand_kwh": 90.31,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 7.97
+          },
+          {
+            "hour": 7,
+            "demand_kwh": 94.44,
+            "solar_kwh": 6.22,
+            "tariff_bdt_per_kwh": 8.25
+          },
+          {
+            "hour": 8,
+            "demand_kwh": 92.5,
+            "solar_kwh": 16.47,
+            "tariff_bdt_per_kwh": 12.3
+          },
+          {
+            "hour": 9,
+            "demand_kwh": 97.5,
+            "solar_kwh": 54.41,
+            "tariff_bdt_per_kwh": 13.96
+          },
+          {
+            "hour": 10,
+            "demand_kwh": 95.59,
+            "solar_kwh": 112.11,
+            "tariff_bdt_per_kwh": 12.94
+          },
+          {
+            "hour": 11,
+            "demand_kwh": 91.27,
+            "solar_kwh": 163.58,
+            "tariff_bdt_per_kwh": 11.06
+          },
+          {
+            "hour": 12,
+            "demand_kwh": 95.67,
+            "solar_kwh": 194.46,
+            "tariff_bdt_per_kwh": 12.77
+          },
+          {
+            "hour": 13,
+            "demand_kwh": 94.64,
+            "solar_kwh": 200.14,
+            "tariff_bdt_per_kwh": 12.41
+          },
+          {
+            "hour": 14,
+            "demand_kwh": 94.85,
+            "solar_kwh": 158.72,
+            "tariff_bdt_per_kwh": 12.64
+          },
+          {
+            "hour": 15,
+            "demand_kwh": 91.01,
+            "solar_kwh": 114.35,
+            "tariff_bdt_per_kwh": 11.36
+          },
+          {
+            "hour": 16,
+            "demand_kwh": 94.94,
+            "solar_kwh": 60.95,
+            "tariff_bdt_per_kwh": 13.28
+          },
+          {
+            "hour": 17,
+            "demand_kwh": 98.79,
+            "solar_kwh": 19.19,
+            "tariff_bdt_per_kwh": 11.26
+          },
+          {
+            "hour": 18,
+            "demand_kwh": 98.6,
+            "solar_kwh": 11.05,
+            "tariff_bdt_per_kwh": 27.6
+          },
+          {
+            "hour": 19,
+            "demand_kwh": 96.53,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 27.48
+          },
+          {
+            "hour": 20,
+            "demand_kwh": 95.17,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 27.53
+          },
+          {
+            "hour": 21,
+            "demand_kwh": 92.55,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 27.36
+          },
+          {
+            "hour": 22,
+            "demand_kwh": 96.41,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 28.51
+          },
+          {
+            "hour": 23,
+            "demand_kwh": 83.61,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 6.17
+          }
+        ],
+        "battery": {
+          "capacity_kwh": 166.78,
+          "initial_energy_kwh": 74.66,
+          "minimum_energy_kwh": 16.74,
+          "max_charge_kwh_per_hour": 44.14,
+          "max_discharge_kwh_per_hour": 44.14
+        }
+      }
+    },
+    {
+      "id": "SYN-RESERVE-02",
+      "tag": "minimum_battery_reserve",
+      "description": "Reserve with non-standard unit phrasing.",
+      "input": {
+        "scenario_id": "SYN-RESERVE-02",
+        "operator_notes": [
+          "The battery must retain a minimum of 120 units through the evening peak."
+        ],
+        "hours": [
+          {
+            "hour": 0,
+            "demand_kwh": 82.64,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 6.26
+          },
+          {
+            "hour": 1,
+            "demand_kwh": 83.41,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 6.14
+          },
+          {
+            "hour": 2,
+            "demand_kwh": 82.98,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 5.91
+          },
+          {
+            "hour": 3,
+            "demand_kwh": 82.72,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 5.7
+          },
+          {
+            "hour": 4,
+            "demand_kwh": 89.27,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 6.18
+          },
+          {
+            "hour": 5,
+            "demand_kwh": 93.82,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 6.47
+          },
+          {
+            "hour": 6,
+            "demand_kwh": 89.88,
+            "solar_kwh": 8.2,
+            "tariff_bdt_per_kwh": 7.93
+          },
+          {
+            "hour": 7,
+            "demand_kwh": 95.41,
+            "solar_kwh": 12.61,
+            "tariff_bdt_per_kwh": 8.35
+          },
+          {
+            "hour": 8,
+            "demand_kwh": 88.35,
+            "solar_kwh": 24.59,
+            "tariff_bdt_per_kwh": 10.64
+          },
+          {
+            "hour": 9,
+            "demand_kwh": 94.14,
+            "solar_kwh": 52.71,
+            "tariff_bdt_per_kwh": 12.61
+          },
+          {
+            "hour": 10,
+            "demand_kwh": 91.5,
+            "solar_kwh": 110.59,
+            "tariff_bdt_per_kwh": 11.31
+          },
+          {
+            "hour": 11,
+            "demand_kwh": 94.81,
+            "solar_kwh": 169.09,
+            "tariff_bdt_per_kwh": 12.48
+          },
+          {
+            "hour": 12,
+            "demand_kwh": 96.11,
+            "solar_kwh": 193.62,
+            "tariff_bdt_per_kwh": 12.95
+          },
+          {
+            "hour": 13,
+            "demand_kwh": 98.43,
+            "solar_kwh": 202.08,
+            "tariff_bdt_per_kwh": 13.92
+          },
+          {
+            "hour": 14,
+            "demand_kwh": 94.72,
+            "solar_kwh": 150.42,
+            "tariff_bdt_per_kwh": 12.59
+          },
+          {
+            "hour": 15,
+            "demand_kwh": 97.55,
+            "solar_kwh": 107.61,
+            "tariff_bdt_per_kwh": 13.98
+          },
+          {
+            "hour": 16,
+            "demand_kwh": 91.26,
+            "solar_kwh": 52.78,
+            "tariff_bdt_per_kwh": 11.81
+          },
+          {
+            "hour": 17,
+            "demand_kwh": 98.18,
+            "solar_kwh": 26.28,
+            "tariff_bdt_per_kwh": 11.01
+          },
+          {
+            "hour": 18,
+            "demand_kwh": 100.26,
+            "solar_kwh": 11.94,
+            "tariff_bdt_per_kwh": 27.93
+          },
+          {
+            "hour": 19,
+            "demand_kwh": 101.28,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 28.43
+          },
+          {
+            "hour": 20,
+            "demand_kwh": 99.58,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 28.42
+          },
+          {
+            "hour": 21,
+            "demand_kwh": 91.11,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 27.07
+          },
+          {
+            "hour": 22,
+            "demand_kwh": 91.37,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 27.5
+          },
+          {
+            "hour": 23,
+            "demand_kwh": 79.5,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 5.75
+          }
+        ],
+        "battery": {
+          "capacity_kwh": 340.97,
+          "initial_energy_kwh": 185.29,
+          "minimum_energy_kwh": 48.06,
+          "max_charge_kwh_per_hour": 39.9,
+          "max_discharge_kwh_per_hour": 39.9
+        }
+      }
+    },
+    {
+      "id": "SYN-NOCHARGE-01",
+      "tag": "no_charge_window",
+      "description": "No-charge window with natural phrasing.",
+      "input": {
+        "scenario_id": "SYN-NOCHARGE-01",
+        "operator_notes": [
+          "Battery charging is unavailable from 2 PM to 4 PM."
+        ],
+        "hours": [
+          {
+            "hour": 0,
+            "demand_kwh": 78.99,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 5.9
+          },
+          {
+            "hour": 1,
+            "demand_kwh": 84.95,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 6.3
+          },
+          {
+            "hour": 2,
+            "demand_kwh": 83.82,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 5.99
+          },
+          {
+            "hour": 3,
+            "demand_kwh": 85.33,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 5.96
+          },
+          {
+            "hour": 4,
+            "demand_kwh": 84.86,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 5.74
+          },
+          {
+            "hour": 5,
+            "demand_kwh": 90.81,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 6.17
+          },
+          {
+            "hour": 6,
+            "demand_kwh": 88.16,
+            "solar_kwh": 0.9,
+            "tariff_bdt_per_kwh": 7.75
+          },
+          {
+            "hour": 7,
+            "demand_kwh": 96.61,
+            "solar_kwh": 15.7,
+            "tariff_bdt_per_kwh": 8.47
+          },
+          {
+            "hour": 8,
+            "demand_kwh": 90.42,
+            "solar_kwh": 26.27,
+            "tariff_bdt_per_kwh": 11.47
+          },
+          {
+            "hour": 9,
+            "demand_kwh": 98.48,
+            "solar_kwh": 57.93,
+            "tariff_bdt_per_kwh": 14.35
+          },
+          {
+            "hour": 10,
+            "demand_kwh": 90.44,
+            "solar_kwh": 101.77,
+            "tariff_bdt_per_kwh": 10.88
+          },
+          {
+            "hour": 11,
+            "demand_kwh": 94.33,
+            "solar_kwh": 163.07,
+            "tariff_bdt_per_kwh": 12.29
+          },
+          {
+            "hour": 12,
+            "demand_kwh": 95.53,
+            "solar_kwh": 190.16,
+            "tariff_bdt_per_kwh": 12.71
+          },
+          {
+            "hour": 13,
+            "demand_kwh": 99.38,
+            "solar_kwh": 204.48,
+            "tariff_bdt_per_kwh": 14.3
+          },
+          {
+            "hour": 14,
+            "demand_kwh": 97.93,
+            "solar_kwh": 154.57,
+            "tariff_bdt_per_kwh": 13.88
+          },
+          {
+            "hour": 15,
+            "demand_kwh": 91.96,
+            "solar_kwh": 116.29,
+            "tariff_bdt_per_kwh": 11.74
+          },
+          {
+            "hour": 16,
+            "demand_kwh": 94.32,
+            "solar_kwh": 50.66,
+            "tariff_bdt_per_kwh": 13.03
+          },
+          {
+            "hour": 17,
+            "demand_kwh": 105.48,
+            "solar_kwh": 25.32,
+            "tariff_bdt_per_kwh": 13.93
+          },
+          {
+            "hour": 18,
+            "demand_kwh": 97.36,
+            "solar_kwh": 10.77,
+            "tariff_bdt_per_kwh": 27.35
+          },
+          {
+            "hour": 19,
+            "demand_kwh": 102.31,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 28.64
+          },
+          {
+            "hour": 20,
+            "demand_kwh": 100.62,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 28.62
+          },
+          {
+            "hour": 21,
+            "demand_kwh": 100.38,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 28.93
+          },
+          {
+            "hour": 22,
+            "demand_kwh": 91.08,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 27.44
+          },
+          {
+            "hour": 23,
+            "demand_kwh": 84.34,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 6.24
+          }
+        ],
+        "battery": {
+          "capacity_kwh": 249.68,
+          "initial_energy_kwh": 147.27,
+          "minimum_energy_kwh": 37.29,
+          "max_charge_kwh_per_hour": 52.95,
+          "max_discharge_kwh_per_hour": 52.95
+        }
+      }
+    },
+    {
+      "id": "SYN-NOCHARGE-02",
+      "tag": "no_charge_window",
+      "description": "No-charge window using 'hours X and Y' phrasing.",
+      "input": {
+        "scenario_id": "SYN-NOCHARGE-02",
+        "operator_notes": [
+          "Do not replenish the storage unit during hours 14 and 15."
+        ],
+        "hours": [
+          {
+            "hour": 0,
+            "demand_kwh": 84.65,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 6.47
+          },
+          {
+            "hour": 1,
+            "demand_kwh": 82.35,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 6.04
+          },
+          {
+            "hour": 2,
+            "demand_kwh": 84.42,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 6.05
+          },
+          {
+            "hour": 3,
+            "demand_kwh": 85.49,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 5.97
+          },
+          {
+            "hour": 4,
+            "demand_kwh": 84.39,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 5.69
+          },
+          {
+            "hour": 5,
+            "demand_kwh": 84.51,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 5.54
+          },
+          {
+            "hour": 6,
+            "demand_kwh": 89.58,
+            "solar_kwh": 12.23,
+            "tariff_bdt_per_kwh": 7.9
+          },
+          {
+            "hour": 7,
+            "demand_kwh": 91.94,
+            "solar_kwh": 10.49,
+            "tariff_bdt_per_kwh": 8.0
+          },
+          {
+            "hour": 8,
+            "demand_kwh": 95.74,
+            "solar_kwh": 27.47,
+            "tariff_bdt_per_kwh": 13.6
+          },
+          {
+            "hour": 9,
+            "demand_kwh": 92.25,
+            "solar_kwh": 58.25,
+            "tariff_bdt_per_kwh": 11.86
+          },
+          {
+            "hour": 10,
+            "demand_kwh": 99.19,
+            "solar_kwh": 100.83,
+            "tariff_bdt_per_kwh": 14.38
+          },
+          {
+            "hour": 11,
+            "demand_kwh": 91.0,
+            "solar_kwh": 150.45,
+            "tariff_bdt_per_kwh": 10.95
+          },
+          {
+            "hour": 12,
+            "demand_kwh": 96.57,
+            "solar_kwh": 193.02,
+            "tariff_bdt_per_kwh": 13.13
+          },
+          {
+            "hour": 13,
+            "demand_kwh": 90.16,
+            "solar_kwh": 195.14,
+            "tariff_bdt_per_kwh": 10.61
+          },
+          {
+            "hour": 14,
+            "demand_kwh": 91.69,
+            "solar_kwh": 165.21,
+            "tariff_bdt_per_kwh": 11.38
+          },
+          {
+            "hour": 15,
+            "demand_kwh": 90.13,
+            "solar_kwh": 103.84,
+            "tariff_bdt_per_kwh": 11.01
+          },
+          {
+            "hour": 16,
+            "demand_kwh": 97.77,
+            "solar_kwh": 68.15,
+            "tariff_bdt_per_kwh": 14.41
+          },
+          {
+            "hour": 17,
+            "demand_kwh": 103.69,
+            "solar_kwh": 18.65,
+            "tariff_bdt_per_kwh": 13.22
+          },
+          {
+            "hour": 18,
+            "demand_kwh": 101.15,
+            "solar_kwh": 12.86,
+            "tariff_bdt_per_kwh": 28.11
+          },
+          {
+            "hour": 19,
+            "demand_kwh": 102.76,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 28.72
+          },
+          {
+            "hour": 20,
+            "demand_kwh": 102.02,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 28.9
+          },
+          {
+            "hour": 21,
+            "demand_kwh": 94.51,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 27.75
+          },
+          {
+            "hour": 22,
+            "demand_kwh": 97.5,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 28.72
+          },
+          {
+            "hour": 23,
+            "demand_kwh": 79.86,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 5.79
+          }
+        ],
+        "battery": {
+          "capacity_kwh": 391.3,
+          "initial_energy_kwh": 200.23,
+          "minimum_energy_kwh": 60.79,
+          "max_charge_kwh_per_hour": 53.74,
+          "max_discharge_kwh_per_hour": 53.74
+        }
+      }
+    },
+    {
+      "id": "SYN-NODISCHARGE-01",
+      "tag": "no_discharge_window",
+      "description": "No-discharge window with 'between X and Y' phrasing.",
+      "input": {
+        "scenario_id": "SYN-NODISCHARGE-01",
+        "operator_notes": [
+          "Keep the battery from discharging between 6 PM and 8 PM."
+        ],
+        "hours": [
+          {
+            "hour": 0,
+            "demand_kwh": 79.98,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 6.0
+          },
+          {
+            "hour": 1,
+            "demand_kwh": 81.23,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 5.93
+          },
+          {
+            "hour": 2,
+            "demand_kwh": 87.12,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 6.32
+          },
+          {
+            "hour": 3,
+            "demand_kwh": 88.69,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 6.29
+          },
+          {
+            "hour": 4,
+            "demand_kwh": 90.44,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 6.29
+          },
+          {
+            "hour": 5,
+            "demand_kwh": 88.06,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 5.89
+          },
+          {
+            "hour": 6,
+            "demand_kwh": 95.14,
+            "solar_kwh": 2.88,
+            "tariff_bdt_per_kwh": 8.45
+          },
+          {
+            "hour": 7,
+            "demand_kwh": 88.77,
+            "solar_kwh": 8.27,
+            "tariff_bdt_per_kwh": 7.69
+          },
+          {
+            "hour": 8,
+            "demand_kwh": 95.9,
+            "solar_kwh": 32.88,
+            "tariff_bdt_per_kwh": 13.67
+          },
+          {
+            "hour": 9,
+            "demand_kwh": 95.55,
+            "solar_kwh": 64.65,
+            "tariff_bdt_per_kwh": 13.18
+          },
+          {
+            "hour": 10,
+            "demand_kwh": 91.36,
+            "solar_kwh": 112.93,
+            "tariff_bdt_per_kwh": 11.25
+          },
+          {
+            "hour": 11,
+            "demand_kwh": 99.31,
+            "solar_kwh": 157.55,
+            "tariff_bdt_per_kwh": 14.27
+          },
+          {
+            "hour": 12,
+            "demand_kwh": 96.76,
+            "solar_kwh": 204.14,
+            "tariff_bdt_per_kwh": 13.2
+          },
+          {
+            "hour": 13,
+            "demand_kwh": 90.61,
+            "solar_kwh": 188.81,
+            "tariff_bdt_per_kwh": 10.8
+          },
+          {
+            "hour": 14,
+            "demand_kwh": 97.03,
+            "solar_kwh": 165.53,
+            "tariff_bdt_per_kwh": 13.52
+          },
+          {
+            "hour": 15,
+            "demand_kwh": 95.63,
+            "solar_kwh": 110.44,
+            "tariff_bdt_per_kwh": 13.21
+          },
+          {
+            "hour": 16,
+            "demand_kwh": 93.26,
+            "solar_kwh": 52.5,
+            "tariff_bdt_per_kwh": 12.61
+          },
+          {
+            "hour": 17,
+            "demand_kwh": 97.02,
+            "solar_kwh": 35.27,
+            "tariff_bdt_per_kwh": 10.55
+          },
+          {
+            "hour": 18,
+            "demand_kwh": 102.2,
+            "solar_kwh": 13.23,
+            "tariff_bdt_per_kwh": 28.32
+          },
+          {
+            "hour": 19,
+            "demand_kwh": 103.84,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 28.94
+          },
+          {
+            "hour": 20,
+            "demand_kwh": 101.66,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 28.83
+          },
+          {
+            "hour": 21,
+            "demand_kwh": 93.71,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 27.59
+          },
+          {
+            "hour": 22,
+            "demand_kwh": 95.55,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 28.33
+          },
+          {
+            "hour": 23,
+            "demand_kwh": 78.54,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 5.66
+          }
+        ],
+        "battery": {
+          "capacity_kwh": 274.42,
+          "initial_energy_kwh": 131.26,
+          "minimum_energy_kwh": 50.05,
+          "max_charge_kwh_per_hour": 69.73,
+          "max_discharge_kwh_per_hour": 69.73
+        }
+      }
+    },
+    {
+      "id": "SYN-GRIDCAP-01",
+      "tag": "max_grid_window",
+      "description": "Grid cap using 'stay at or below' phrasing.",
+      "input": {
+        "scenario_id": "SYN-GRIDCAP-01",
+        "operator_notes": [
+          "Grid import must stay at or below 100 kWh during 5-7 PM."
+        ],
+        "hours": [
+          {
+            "hour": 0,
+            "demand_kwh": 81.39,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 6.14
+          },
+          {
+            "hour": 1,
+            "demand_kwh": 83.25,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 6.13
+          },
+          {
+            "hour": 2,
+            "demand_kwh": 81.29,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 5.74
+          },
+          {
+            "hour": 3,
+            "demand_kwh": 88.81,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 6.31
+          },
+          {
+            "hour": 4,
+            "demand_kwh": 85.86,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 5.84
+          },
+          {
+            "hour": 5,
+            "demand_kwh": 87.77,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 5.86
+          },
+          {
+            "hour": 6,
+            "demand_kwh": 92.79,
+            "solar_kwh": 5.71,
+            "tariff_bdt_per_kwh": 8.22
+          },
+          {
+            "hour": 7,
+            "demand_kwh": 90.42,
+            "solar_kwh": 12.29,
+            "tariff_bdt_per_kwh": 7.85
+          },
+          {
+            "hour": 8,
+            "demand_kwh": 97.46,
+            "solar_kwh": 21.22,
+            "tariff_bdt_per_kwh": 14.29
+          },
+          {
+            "hour": 9,
+            "demand_kwh": 93.45,
+            "solar_kwh": 64.89,
+            "tariff_bdt_per_kwh": 12.34
+          },
+          {
+            "hour": 10,
+            "demand_kwh": 93.22,
+            "solar_kwh": 103.78,
+            "tariff_bdt_per_kwh": 11.99
+          },
+          {
+            "hour": 11,
+            "demand_kwh": 90.07,
+            "solar_kwh": 156.98,
+            "tariff_bdt_per_kwh": 10.58
+          },
+          {
+            "hour": 12,
+            "demand_kwh": 97.57,
+            "solar_kwh": 199.42,
+            "tariff_bdt_per_kwh": 13.53
+          },
+          {
+            "hour": 13,
+            "demand_kwh": 92.01,
+            "solar_kwh": 192.1,
+            "tariff_bdt_per_kwh": 11.35
+          },
+          {
+            "hour": 14,
+            "demand_kwh": 94.06,
+            "solar_kwh": 168.64,
+            "tariff_bdt_per_kwh": 12.33
+          },
+          {
+            "hour": 15,
+            "demand_kwh": 95.61,
+            "solar_kwh": 106.24,
+            "tariff_bdt_per_kwh": 13.2
+          },
+          {
+            "hour": 16,
+            "demand_kwh": 92.66,
+            "solar_kwh": 56.21,
+            "tariff_bdt_per_kwh": 12.37
+          },
+          {
+            "hour": 17,
+            "demand_kwh": 106.42,
+            "solar_kwh": 16.8,
+            "tariff_bdt_per_kwh": 14.31
+          },
+          {
+            "hour": 18,
+            "demand_kwh": 99.55,
+            "solar_kwh": 14.85,
+            "tariff_bdt_per_kwh": 27.79
+          },
+          {
+            "hour": 19,
+            "demand_kwh": 97.71,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 27.72
+          },
+          {
+            "hour": 20,
+            "demand_kwh": 93.53,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 27.21
+          },
+          {
+            "hour": 21,
+            "demand_kwh": 91.03,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 27.06
+          },
+          {
+            "hour": 22,
+            "demand_kwh": 90.06,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 27.24
+          },
+          {
+            "hour": 23,
+            "demand_kwh": 82.68,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 6.07
+          }
+        ],
+        "battery": {
+          "capacity_kwh": 309.86,
+          "initial_energy_kwh": 166.89,
+          "minimum_energy_kwh": 38.45,
+          "max_charge_kwh_per_hour": 70.34,
+          "max_discharge_kwh_per_hour": 70.34
+        }
+      }
+    },
+    {
+      "id": "SYN-GRIDCAP-02",
+      "tag": "max_grid_window",
+      "description": "Grid cap using 'do not draw more than' phrasing.",
+      "input": {
+        "scenario_id": "SYN-GRIDCAP-02",
+        "operator_notes": [
+          "Do not draw more than 100 kWh from the utility during hours 17 and 18."
+        ],
+        "hours": [
+          {
+            "hour": 0,
+            "demand_kwh": 80.06,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 6.01
+          },
+          {
+            "hour": 1,
+            "demand_kwh": 78.64,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 5.67
+          },
+          {
+            "hour": 2,
+            "demand_kwh": 82.4,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 5.85
+          },
+          {
+            "hour": 3,
+            "demand_kwh": 88.81,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 6.31
+          },
+          {
+            "hour": 4,
+            "demand_kwh": 89.48,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 6.2
+          },
+          {
+            "hour": 5,
+            "demand_kwh": 85.83,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 5.67
+          },
+          {
+            "hour": 6,
+            "demand_kwh": 94.47,
+            "solar_kwh": 3.04,
+            "tariff_bdt_per_kwh": 8.39
+          },
+          {
+            "hour": 7,
+            "demand_kwh": 95.51,
+            "solar_kwh": 3.08,
+            "tariff_bdt_per_kwh": 8.36
+          },
+          {
+            "hour": 8,
+            "demand_kwh": 88.4,
+            "solar_kwh": 23.44,
+            "tariff_bdt_per_kwh": 10.66
+          },
+          {
+            "hour": 9,
+            "demand_kwh": 95.3,
+            "solar_kwh": 64.89,
+            "tariff_bdt_per_kwh": 13.08
+          },
+          {
+            "hour": 10,
+            "demand_kwh": 93.28,
+            "solar_kwh": 111.01,
+            "tariff_bdt_per_kwh": 12.02
+          },
+          {
+            "hour": 11,
+            "demand_kwh": 90.65,
+            "solar_kwh": 153.1,
+            "tariff_bdt_per_kwh": 10.81
+          },
+          {
+            "hour": 12,
+            "demand_kwh": 93.19,
+            "solar_kwh": 202.79,
+            "tariff_bdt_per_kwh": 11.78
+          },
+          {
+            "hour": 13,
+            "demand_kwh": 96.32,
+            "solar_kwh": 202.29,
+            "tariff_bdt_per_kwh": 13.08
+          },
+          {
+            "hour": 14,
+            "demand_kwh": 90.57,
+            "solar_kwh": 150.52,
+            "tariff_bdt_per_kwh": 10.93
+          },
+          {
+            "hour": 15,
+            "demand_kwh": 92.08,
+            "solar_kwh": 109.94,
+            "tariff_bdt_per_kwh": 11.79
+          },
+          {
+            "hour": 16,
+            "demand_kwh": 94.87,
+            "solar_kwh": 56.33,
+            "tariff_bdt_per_kwh": 13.25
+          },
+          {
+            "hour": 17,
+            "demand_kwh": 99.24,
+            "solar_kwh": 17.95,
+            "tariff_bdt_per_kwh": 11.44
+          },
+          {
+            "hour": 18,
+            "demand_kwh": 104.35,
+            "solar_kwh": 6.09,
+            "tariff_bdt_per_kwh": 28.75
+          },
+          {
+            "hour": 19,
+            "demand_kwh": 99.86,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 28.15
+          },
+          {
+            "hour": 20,
+            "demand_kwh": 98.81,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 28.26
+          },
+          {
+            "hour": 21,
+            "demand_kwh": 91.12,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 27.08
+          },
+          {
+            "hour": 22,
+            "demand_kwh": 89.58,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 27.14
+          },
+          {
+            "hour": 23,
+            "demand_kwh": 83.09,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 6.11
+          }
+        ],
+        "battery": {
+          "capacity_kwh": 276.38,
+          "initial_energy_kwh": 110.7,
+          "minimum_energy_kwh": 37.36,
+          "max_charge_kwh_per_hour": 70.36,
+          "max_discharge_kwh_per_hour": 70.36
+        }
+      }
+    },
+    {
+      "id": "SYN-DISTRACTOR-01",
+      "tag": "no_op",
+      "description": "Single distractor note.",
+      "input": {
+        "scenario_id": "SYN-DISTRACTOR-01",
+        "operator_notes": [
+          "The cafeteria menu has changed next week."
+        ],
+        "hours": [
+          {
+            "hour": 0,
+            "demand_kwh": 76.93,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 5.69
+          },
+          {
+            "hour": 1,
+            "demand_kwh": 82.63,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 6.07
+          },
+          {
+            "hour": 2,
+            "demand_kwh": 86.23,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 6.23
+          },
+          {
+            "hour": 3,
+            "demand_kwh": 81.83,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 5.61
+          },
+          {
+            "hour": 4,
+            "demand_kwh": 89.79,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 6.23
+          },
+          {
+            "hour": 5,
+            "demand_kwh": 89.11,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 6.0
+          },
+          {
+            "hour": 6,
+            "demand_kwh": 94.27,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 8.37
+          },
+          {
+            "hour": 7,
+            "demand_kwh": 95.19,
+            "solar_kwh": 11.06,
+            "tariff_bdt_per_kwh": 8.33
+          },
+          {
+            "hour": 8,
+            "demand_kwh": 91.57,
+            "solar_kwh": 31.09,
+            "tariff_bdt_per_kwh": 11.93
+          },
+          {
+            "hour": 9,
+            "demand_kwh": 95.51,
+            "solar_kwh": 50.93,
+            "tariff_bdt_per_kwh": 13.16
+          },
+          {
+            "hour": 10,
+            "demand_kwh": 95.43,
+            "solar_kwh": 111.64,
+            "tariff_bdt_per_kwh": 12.88
+          },
+          {
+            "hour": 11,
+            "demand_kwh": 95.1,
+            "solar_kwh": 159.67,
+            "tariff_bdt_per_kwh": 12.59
+          },
+          {
+            "hour": 12,
+            "demand_kwh": 96.67,
+            "solar_kwh": 202.39,
+            "tariff_bdt_per_kwh": 13.17
+          },
+          {
+            "hour": 13,
+            "demand_kwh": 96.75,
+            "solar_kwh": 201.65,
+            "tariff_bdt_per_kwh": 13.25
+          },
+          {
+            "hour": 14,
+            "demand_kwh": 91.9,
+            "solar_kwh": 156.86,
+            "tariff_bdt_per_kwh": 11.46
+          },
+          {
+            "hour": 15,
+            "demand_kwh": 92.09,
+            "solar_kwh": 110.37,
+            "tariff_bdt_per_kwh": 11.79
+          },
+          {
+            "hour": 16,
+            "demand_kwh": 93.55,
+            "solar_kwh": 60.64,
+            "tariff_bdt_per_kwh": 12.73
+          },
+          {
+            "hour": 17,
+            "demand_kwh": 100.81,
+            "solar_kwh": 26.86,
+            "tariff_bdt_per_kwh": 12.06
+          },
+          {
+            "hour": 18,
+            "demand_kwh": 102.71,
+            "solar_kwh": 13.06,
+            "tariff_bdt_per_kwh": 28.42
+          },
+          {
+            "hour": 19,
+            "demand_kwh": 96.37,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 27.45
+          },
+          {
+            "hour": 20,
+            "demand_kwh": 94.9,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 27.48
+          },
+          {
+            "hour": 21,
+            "demand_kwh": 95.19,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 27.89
+          },
+          {
+            "hour": 22,
+            "demand_kwh": 89.34,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 27.09
+          },
+          {
+            "hour": 23,
+            "demand_kwh": 84.2,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 6.22
+          }
+        ],
+        "battery": {
+          "capacity_kwh": 198.17,
+          "initial_energy_kwh": 103.08,
+          "minimum_energy_kwh": 34.37,
+          "max_charge_kwh_per_hour": 35.45,
+          "max_discharge_kwh_per_hour": 35.45
+        }
+      }
+    },
+    {
+      "id": "SYN-DISTRACTOR-02",
+      "tag": "no_op",
+      "description": "Single distractor note (registrations).",
+      "input": {
+        "scenario_id": "SYN-DISTRACTOR-02",
+        "operator_notes": [
+          "The registration deadline moved to next month."
+        ],
+        "hours": [
+          {
+            "hour": 0,
+            "demand_kwh": 79.01,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 5.9
+          },
+          {
+            "hour": 1,
+            "demand_kwh": 80.31,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 5.83
+          },
+          {
+            "hour": 2,
+            "demand_kwh": 86.24,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 6.24
+          },
+          {
+            "hour": 3,
+            "demand_kwh": 85.36,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 5.96
+          },
+          {
+            "hour": 4,
+            "demand_kwh": 88.52,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 6.1
+          },
+          {
+            "hour": 5,
+            "demand_kwh": 87.93,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 5.88
+          },
+          {
+            "hour": 6,
+            "demand_kwh": 93.47,
+            "solar_kwh": 0.95,
+            "tariff_bdt_per_kwh": 8.29
+          },
+          {
+            "hour": 7,
+            "demand_kwh": 92.32,
+            "solar_kwh": 6.41,
+            "tariff_bdt_per_kwh": 8.04
+          },
+          {
+            "hour": 8,
+            "demand_kwh": 97.8,
+            "solar_kwh": 31.11,
+            "tariff_bdt_per_kwh": 14.42
+          },
+          {
+            "hour": 9,
+            "demand_kwh": 92.39,
+            "solar_kwh": 58.0,
+            "tariff_bdt_per_kwh": 11.91
+          },
+          {
+            "hour": 10,
+            "demand_kwh": 94.02,
+            "solar_kwh": 109.09,
+            "tariff_bdt_per_kwh": 12.31
+          },
+          {
+            "hour": 11,
+            "demand_kwh": 94.26,
+            "solar_kwh": 157.29,
+            "tariff_bdt_per_kwh": 12.26
+          },
+          {
+            "hour": 12,
+            "demand_kwh": 97.4,
+            "solar_kwh": 200.79,
+            "tariff_bdt_per_kwh": 13.46
+          },
+          {
+            "hour": 13,
+            "demand_kwh": 93.02,
+            "solar_kwh": 195.9,
+            "tariff_bdt_per_kwh": 11.76
+          },
+          {
+            "hour": 14,
+            "demand_kwh": 91.84,
+            "solar_kwh": 169.32,
+            "tariff_bdt_per_kwh": 11.44
+          },
+          {
+            "hour": 15,
+            "demand_kwh": 90.26,
+            "solar_kwh": 104.12,
+            "tariff_bdt_per_kwh": 11.06
+          },
+          {
+            "hour": 16,
+            "demand_kwh": 89.33,
+            "solar_kwh": 57.81,
+            "tariff_bdt_per_kwh": 11.03
+          },
+          {
+            "hour": 17,
+            "demand_kwh": 97.51,
+            "solar_kwh": 25.18,
+            "tariff_bdt_per_kwh": 10.74
+          },
+          {
+            "hour": 18,
+            "demand_kwh": 98.08,
+            "solar_kwh": 14.51,
+            "tariff_bdt_per_kwh": 27.49
+          },
+          {
+            "hour": 19,
+            "demand_kwh": 95.82,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 27.34
+          },
+          {
+            "hour": 20,
+            "demand_kwh": 99.57,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 28.41
+          },
+          {
+            "hour": 21,
+            "demand_kwh": 91.61,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 27.17
+          },
+          {
+            "hour": 22,
+            "demand_kwh": 96.48,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 28.52
+          },
+          {
+            "hour": 23,
+            "demand_kwh": 78.41,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 5.65
+          }
+        ],
+        "battery": {
+          "capacity_kwh": 250.32,
+          "initial_energy_kwh": 112.75,
+          "minimum_energy_kwh": 43.44,
+          "max_charge_kwh_per_hour": 53.12,
+          "max_discharge_kwh_per_hour": 53.12
+        }
+      }
+    },
+    {
+      "id": "SYN-DISTRACTOR-03",
+      "tag": "no_op",
+      "description": "Single distractor note (sports).",
+      "input": {
+        "scenario_id": "SYN-DISTRACTOR-03",
+        "operator_notes": [
+          "The sports department updated its event calendar."
+        ],
+        "hours": [
+          {
+            "hour": 0,
+            "demand_kwh": 76.65,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 5.66
+          },
+          {
+            "hour": 1,
+            "demand_kwh": 82.65,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 6.07
+          },
+          {
+            "hour": 2,
+            "demand_kwh": 83.34,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 5.95
+          },
+          {
+            "hour": 3,
+            "demand_kwh": 86.52,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 6.08
+          },
+          {
+            "hour": 4,
+            "demand_kwh": 87.71,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 6.02
+          },
+          {
+            "hour": 5,
+            "demand_kwh": 84.61,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 5.55
+          },
+          {
+            "hour": 6,
+            "demand_kwh": 86.39,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 7.58
+          },
+          {
+            "hour": 7,
+            "demand_kwh": 87.52,
+            "solar_kwh": 11.09,
+            "tariff_bdt_per_kwh": 7.56
+          },
+          {
+            "hour": 8,
+            "demand_kwh": 94.72,
+            "solar_kwh": 25.31,
+            "tariff_bdt_per_kwh": 13.19
+          },
+          {
+            "hour": 9,
+            "demand_kwh": 93.53,
+            "solar_kwh": 60.31,
+            "tariff_bdt_per_kwh": 12.37
+          },
+          {
+            "hour": 10,
+            "demand_kwh": 98.44,
+            "solar_kwh": 107.47,
+            "tariff_bdt_per_kwh": 14.08
+          },
+          {
+            "hour": 11,
+            "demand_kwh": 93.96,
+            "solar_kwh": 150.65,
+            "tariff_bdt_per_kwh": 12.14
+          },
+          {
+            "hour": 12,
+            "demand_kwh": 97.36,
+            "solar_kwh": 186.62,
+            "tariff_bdt_per_kwh": 13.45
+          },
+          {
+            "hour": 13,
+            "demand_kwh": 98.91,
+            "solar_kwh": 186.29,
+            "tariff_bdt_per_kwh": 14.11
+          },
+          {
+            "hour": 14,
+            "demand_kwh": 91.97,
+            "solar_kwh": 163.16,
+            "tariff_bdt_per_kwh": 11.49
+          },
+          {
+            "hour": 15,
+            "demand_kwh": 97.08,
+            "solar_kwh": 106.39,
+            "tariff_bdt_per_kwh": 13.79
+          },
+          {
+            "hour": 16,
+            "demand_kwh": 92.8,
+            "solar_kwh": 66.66,
+            "tariff_bdt_per_kwh": 12.43
+          },
+          {
+            "hour": 17,
+            "demand_kwh": 103.74,
+            "solar_kwh": 24.58,
+            "tariff_bdt_per_kwh": 13.24
+          },
+          {
+            "hour": 18,
+            "demand_kwh": 104.6,
+            "solar_kwh": 14.44,
+            "tariff_bdt_per_kwh": 28.8
+          },
+          {
+            "hour": 19,
+            "demand_kwh": 94.25,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 27.02
+          },
+          {
+            "hour": 20,
+            "demand_kwh": 93.17,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 27.13
+          },
+          {
+            "hour": 21,
+            "demand_kwh": 99.72,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 28.8
+          },
+          {
+            "hour": 22,
+            "demand_kwh": 90.68,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 27.36
+          },
+          {
+            "hour": 23,
+            "demand_kwh": 86.43,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 6.45
+          }
+        ],
+        "battery": {
+          "capacity_kwh": 191.2,
+          "initial_energy_kwh": 99.56,
+          "minimum_energy_kwh": 27.64,
+          "max_charge_kwh_per_hour": 58.9,
+          "max_discharge_kwh_per_hour": 58.9
+        }
+      }
+    },
+    {
+      "id": "SYN-MULTI-01",
+      "tag": "two_directives",
+      "description": "Two applicable directives, solar + reserve.",
+      "input": {
+        "scenario_id": "SYN-MULTI-01",
+        "operator_notes": [
+          "Panel washing from 1 PM to 3 PM will leave 20% of normal solar.",
+          "Battery must hold at least 80 kWh from 6 PM to 9 PM."
+        ],
+        "hours": [
+          {
+            "hour": 0,
+            "demand_kwh": 82.47,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 6.25
+          },
+          {
+            "hour": 1,
+            "demand_kwh": 81.95,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 6.0
+          },
+          {
+            "hour": 2,
+            "demand_kwh": 79.99,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 5.61
+          },
+          {
+            "hour": 3,
+            "demand_kwh": 86.24,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 6.05
+          },
+          {
+            "hour": 4,
+            "demand_kwh": 84.92,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 5.74
+          },
+          {
+            "hour": 5,
+            "demand_kwh": 89.46,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 6.03
+          },
+          {
+            "hour": 6,
+            "demand_kwh": 95.57,
+            "solar_kwh": 7.87,
+            "tariff_bdt_per_kwh": 8.5
+          },
+          {
+            "hour": 7,
+            "demand_kwh": 92.29,
+            "solar_kwh": 9.7,
+            "tariff_bdt_per_kwh": 8.04
+          },
+          {
+            "hour": 8,
+            "demand_kwh": 88.41,
+            "solar_kwh": 18.62,
+            "tariff_bdt_per_kwh": 10.67
+          },
+          {
+            "hour": 9,
+            "demand_kwh": 90.63,
+            "solar_kwh": 59.75,
+            "tariff_bdt_per_kwh": 11.21
+          },
+          {
+            "hour": 10,
+            "demand_kwh": 98.48,
+            "solar_kwh": 101.89,
+            "tariff_bdt_per_kwh": 14.1
+          },
+          {
+            "hour": 11,
+            "demand_kwh": 91.42,
+            "solar_kwh": 160.37,
+            "tariff_bdt_per_kwh": 11.12
+          },
+          {
+            "hour": 12,
+            "demand_kwh": 93.78,
+            "solar_kwh": 205.0,
+            "tariff_bdt_per_kwh": 12.01
+          },
+          {
+            "hour": 13,
+            "demand_kwh": 90.31,
+            "solar_kwh": 195.84,
+            "tariff_bdt_per_kwh": 10.68
+          },
+          {
+            "hour": 14,
+            "demand_kwh": 92.72,
+            "solar_kwh": 150.54,
+            "tariff_bdt_per_kwh": 11.79
+          },
+          {
+            "hour": 15,
+            "demand_kwh": 92.47,
+            "solar_kwh": 100.6,
+            "tariff_bdt_per_kwh": 11.95
+          },
+          {
+            "hour": 16,
+            "demand_kwh": 97.79,
+            "solar_kwh": 66.73,
+            "tariff_bdt_per_kwh": 14.42
+          },
+          {
+            "hour": 17,
+            "demand_kwh": 106.26,
+            "solar_kwh": 19.49,
+            "tariff_bdt_per_kwh": 14.24
+          },
+          {
+            "hour": 18,
+            "demand_kwh": 96.76,
+            "solar_kwh": 7.28,
+            "tariff_bdt_per_kwh": 27.23
+          },
+          {
+            "hour": 19,
+            "demand_kwh": 101.86,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 28.55
+          },
+          {
+            "hour": 20,
+            "demand_kwh": 95.01,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 27.5
+          },
+          {
+            "hour": 21,
+            "demand_kwh": 96.14,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 28.08
+          },
+          {
+            "hour": 22,
+            "demand_kwh": 94.04,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 28.03
+          },
+          {
+            "hour": 23,
+            "demand_kwh": 82.56,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 6.06
+          }
+        ],
+        "battery": {
+          "capacity_kwh": 336.78,
+          "initial_energy_kwh": 168.33,
+          "minimum_energy_kwh": 37.42,
+          "max_charge_kwh_per_hour": 57.49,
+          "max_discharge_kwh_per_hour": 57.49
+        }
+      }
+    },
+    {
+      "id": "SYN-MULTI-02",
+      "tag": "two_directives",
+      "description": "Two applicable directives, no-charge + grid cap.",
+      "input": {
+        "scenario_id": "SYN-MULTI-02",
+        "operator_notes": [
+          "The battery charger will be isolated from 2 AM until 5 AM for electrical maintenance.",
+          "From 6 PM until 9 PM, campus grid import must not exceed 130 kWh because the feeder is operating under a temporary limit."
+        ],
+        "hours": [
+          {
+            "hour": 0,
+            "demand_kwh": 82.65,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 6.27
+          },
+          {
+            "hour": 1,
+            "demand_kwh": 84.89,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 6.29
+          },
+          {
+            "hour": 2,
+            "demand_kwh": 80.24,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 5.64
+          },
+          {
+            "hour": 3,
+            "demand_kwh": 89.67,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 6.39
+          },
+          {
+            "hour": 4,
+            "demand_kwh": 90.83,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 6.33
+          },
+          {
+            "hour": 5,
+            "demand_kwh": 92.41,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 6.33
+          },
+          {
+            "hour": 6,
+            "demand_kwh": 92.69,
+            "solar_kwh": 8.23,
+            "tariff_bdt_per_kwh": 8.21
+          },
+          {
+            "hour": 7,
+            "demand_kwh": 96.58,
+            "solar_kwh": 15.57,
+            "tariff_bdt_per_kwh": 8.47
+          },
+          {
+            "hour": 8,
+            "demand_kwh": 96.16,
+            "solar_kwh": 19.12,
+            "tariff_bdt_per_kwh": 13.77
+          },
+          {
+            "hour": 9,
+            "demand_kwh": 97.87,
+            "solar_kwh": 66.61,
+            "tariff_bdt_per_kwh": 14.11
+          },
+          {
+            "hour": 10,
+            "demand_kwh": 93.67,
+            "solar_kwh": 113.7,
+            "tariff_bdt_per_kwh": 12.17
+          },
+          {
+            "hour": 11,
+            "demand_kwh": 90.65,
+            "solar_kwh": 166.27,
+            "tariff_bdt_per_kwh": 10.81
+          },
+          {
+            "hour": 12,
+            "demand_kwh": 99.92,
+            "solar_kwh": 199.22,
+            "tariff_bdt_per_kwh": 14.47
+          },
+          {
+            "hour": 13,
+            "demand_kwh": 97.29,
+            "solar_kwh": 204.42,
+            "tariff_bdt_per_kwh": 13.47
+          },
+          {
+            "hour": 14,
+            "demand_kwh": 99.2,
+            "solar_kwh": 166.05,
+            "tariff_bdt_per_kwh": 14.38
+          },
+          {
+            "hour": 15,
+            "demand_kwh": 97.09,
+            "solar_kwh": 115.09,
+            "tariff_bdt_per_kwh": 13.79
+          },
+          {
+            "hour": 16,
+            "demand_kwh": 97.79,
+            "solar_kwh": 57.12,
+            "tariff_bdt_per_kwh": 14.42
+          },
+          {
+            "hour": 17,
+            "demand_kwh": 104.23,
+            "solar_kwh": 17.96,
+            "tariff_bdt_per_kwh": 13.43
+          },
+          {
+            "hour": 18,
+            "demand_kwh": 96.4,
+            "solar_kwh": 19.55,
+            "tariff_bdt_per_kwh": 27.16
+          },
+          {
+            "hour": 19,
+            "demand_kwh": 101.57,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 28.49
+          },
+          {
+            "hour": 20,
+            "demand_kwh": 96.72,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 27.84
+          },
+          {
+            "hour": 21,
+            "demand_kwh": 99.02,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 28.66
+          },
+          {
+            "hour": 22,
+            "demand_kwh": 89.69,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 27.16
+          },
+          {
+            "hour": 23,
+            "demand_kwh": 82.73,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 6.08
+          }
+        ],
+        "battery": {
+          "capacity_kwh": 341.34,
+          "initial_energy_kwh": 200.67,
+          "minimum_energy_kwh": 38.78,
+          "max_charge_kwh_per_hour": 74.64,
+          "max_discharge_kwh_per_hour": 74.64
+        }
+      }
+    },
+    {
+      "id": "SYN-MULTI-03",
+      "tag": "three_notes",
+      "description": "Three notes, one distractor, two applicable directives.",
+      "input": {
+        "scenario_id": "SYN-MULTI-03",
+        "operator_notes": [
+          "Expect an 80% reduction in rooftop solar between 11 AM and 2 PM because of inverter work.",
+          "The student affairs office will publish club notices tomorrow.",
+          "Grid intake must stay at or below 150 kWh from 6 PM to 9 PM while the substation is constrained."
+        ],
+        "hours": [
+          {
+            "hour": 0,
+            "demand_kwh": 75.5,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 5.55
+          },
+          {
+            "hour": 1,
+            "demand_kwh": 78.51,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 5.65
+          },
+          {
+            "hour": 2,
+            "demand_kwh": 88.6,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 6.47
+          },
+          {
+            "hour": 3,
+            "demand_kwh": 83.23,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 5.75
+          },
+          {
+            "hour": 4,
+            "demand_kwh": 83.28,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 5.58
+          },
+          {
+            "hour": 5,
+            "demand_kwh": 85.16,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 5.6
+          },
+          {
+            "hour": 6,
+            "demand_kwh": 90.87,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 8.03
+          },
+          {
+            "hour": 7,
+            "demand_kwh": 90.84,
+            "solar_kwh": 2.81,
+            "tariff_bdt_per_kwh": 7.89
+          },
+          {
+            "hour": 8,
+            "demand_kwh": 95.23,
+            "solar_kwh": 35.83,
+            "tariff_bdt_per_kwh": 13.4
+          },
+          {
+            "hour": 9,
+            "demand_kwh": 92.25,
+            "solar_kwh": 53.74,
+            "tariff_bdt_per_kwh": 11.86
+          },
+          {
+            "hour": 10,
+            "demand_kwh": 91.1,
+            "solar_kwh": 98.61,
+            "tariff_bdt_per_kwh": 11.15
+          },
+          {
+            "hour": 11,
+            "demand_kwh": 97.61,
+            "solar_kwh": 151.77,
+            "tariff_bdt_per_kwh": 13.6
+          },
+          {
+            "hour": 12,
+            "demand_kwh": 91.45,
+            "solar_kwh": 195.59,
+            "tariff_bdt_per_kwh": 11.08
+          },
+          {
+            "hour": 13,
+            "demand_kwh": 95.55,
+            "solar_kwh": 192.94,
+            "tariff_bdt_per_kwh": 12.77
+          },
+          {
+            "hour": 14,
+            "demand_kwh": 97.31,
+            "solar_kwh": 164.18,
+            "tariff_bdt_per_kwh": 13.63
+          },
+          {
+            "hour": 15,
+            "demand_kwh": 91.28,
+            "solar_kwh": 103.84,
+            "tariff_bdt_per_kwh": 11.47
+          },
+          {
+            "hour": 16,
+            "demand_kwh": 90.01,
+            "solar_kwh": 51.98,
+            "tariff_bdt_per_kwh": 11.31
+          },
+          {
+            "hour": 17,
+            "demand_kwh": 100.98,
+            "solar_kwh": 31.87,
+            "tariff_bdt_per_kwh": 12.13
+          },
+          {
+            "hour": 18,
+            "demand_kwh": 96.8,
+            "solar_kwh": 2.6,
+            "tariff_bdt_per_kwh": 27.24
+          },
+          {
+            "hour": 19,
+            "demand_kwh": 100.36,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 28.25
+          },
+          {
+            "hour": 20,
+            "demand_kwh": 98.33,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 28.17
+          },
+          {
+            "hour": 21,
+            "demand_kwh": 99.22,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 28.7
+          },
+          {
+            "hour": 22,
+            "demand_kwh": 89.34,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 27.09
+          },
+          {
+            "hour": 23,
+            "demand_kwh": 82.3,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 6.03
+          }
+        ],
+        "battery": {
+          "capacity_kwh": 162.53,
+          "initial_energy_kwh": 64.43,
+          "minimum_energy_kwh": 32.04,
+          "max_charge_kwh_per_hour": 42.46,
+          "max_discharge_kwh_per_hour": 42.46
+        }
+      }
+    },
+    {
+      "id": "SYN-DECIMAL-01",
+      "tag": "decimal_values",
+      "description": "Decimal kWh and percent values.",
+      "input": {
+        "scenario_id": "SYN-DECIMAL-01",
+        "operator_notes": [
+          "PV output should drop to 12.5% of forecast between 13:00 and 15:00.",
+          "Reserve at least 87.5 kWh from 6 PM to 9 PM."
+        ],
+        "hours": [
+          {
+            "hour": 0,
+            "demand_kwh": 76.05,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 5.61
+          },
+          {
+            "hour": 1,
+            "demand_kwh": 80.51,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 5.86
+          },
+          {
+            "hour": 2,
+            "demand_kwh": 86.89,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 6.3
+          },
+          {
+            "hour": 3,
+            "demand_kwh": 85.68,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 5.99
+          },
+          {
+            "hour": 4,
+            "demand_kwh": 87.46,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 6.0
+          },
+          {
+            "hour": 5,
+            "demand_kwh": 92.18,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 6.31
+          },
+          {
+            "hour": 6,
+            "demand_kwh": 86.94,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 7.63
+          },
+          {
+            "hour": 7,
+            "demand_kwh": 90.22,
+            "solar_kwh": 6.82,
+            "tariff_bdt_per_kwh": 7.83
+          },
+          {
+            "hour": 8,
+            "demand_kwh": 90.08,
+            "solar_kwh": 32.42,
+            "tariff_bdt_per_kwh": 11.34
+          },
+          {
+            "hour": 9,
+            "demand_kwh": 97.47,
+            "solar_kwh": 58.63,
+            "tariff_bdt_per_kwh": 13.95
+          },
+          {
+            "hour": 10,
+            "demand_kwh": 94.29,
+            "solar_kwh": 106.98,
+            "tariff_bdt_per_kwh": 12.42
+          },
+          {
+            "hour": 11,
+            "demand_kwh": 96.23,
+            "solar_kwh": 165.81,
+            "tariff_bdt_per_kwh": 13.04
+          },
+          {
+            "hour": 12,
+            "demand_kwh": 92.99,
+            "solar_kwh": 187.72,
+            "tariff_bdt_per_kwh": 11.7
+          },
+          {
+            "hour": 13,
+            "demand_kwh": 95.71,
+            "solar_kwh": 191.7,
+            "tariff_bdt_per_kwh": 12.83
+          },
+          {
+            "hour": 14,
+            "demand_kwh": 90.51,
+            "solar_kwh": 153.88,
+            "tariff_bdt_per_kwh": 10.91
+          },
+          {
+            "hour": 15,
+            "demand_kwh": 98.33,
+            "solar_kwh": 114.28,
+            "tariff_bdt_per_kwh": 14.29
+          },
+          {
+            "hour": 16,
+            "demand_kwh": 91.34,
+            "solar_kwh": 58.35,
+            "tariff_bdt_per_kwh": 11.84
+          },
+          {
+            "hour": 17,
+            "demand_kwh": 99.71,
+            "solar_kwh": 29.12,
+            "tariff_bdt_per_kwh": 11.62
+          },
+          {
+            "hour": 18,
+            "demand_kwh": 105.38,
+            "solar_kwh": 5.69,
+            "tariff_bdt_per_kwh": 28.95
+          },
+          {
+            "hour": 19,
+            "demand_kwh": 99.31,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 28.03
+          },
+          {
+            "hour": 20,
+            "demand_kwh": 98.45,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 28.19
+          },
+          {
+            "hour": 21,
+            "demand_kwh": 97.88,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 28.43
+          },
+          {
+            "hour": 22,
+            "demand_kwh": 93.85,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 27.99
+          },
+          {
+            "hour": 23,
+            "demand_kwh": 86.68,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 6.47
+          }
+        ],
+        "battery": {
+          "capacity_kwh": 176.28,
+          "initial_energy_kwh": 80.49,
+          "minimum_energy_kwh": 31.75,
+          "max_charge_kwh_per_hour": 54.68,
+          "max_discharge_kwh_per_hour": 54.68
+        }
+      }
+    },
+    {
+      "id": "SYN-PARAPHRASE-01",
+      "tag": "multiple_paraphrases",
+      "description": "Three paraphrased directives of different types.",
+      "input": {
+        "scenario_id": "SYN-PARAPHRASE-01",
+        "operator_notes": [
+          "Expect a 70% drop in rooftop generation during 1-3 PM.",
+          "Avoid charging the battery from 14:00 to 16:00.",
+          "Keep 75 kWh in the battery from 18:00 to 21:00."
+        ],
+        "hours": [
+          {
+            "hour": 0,
+            "demand_kwh": 79.31,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 5.93
+          },
+          {
+            "hour": 1,
+            "demand_kwh": 79.9,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 5.79
+          },
+          {
+            "hour": 2,
+            "demand_kwh": 84.72,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 6.08
+          },
+          {
+            "hour": 3,
+            "demand_kwh": 84.6,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 5.89
+          },
+          {
+            "hour": 4,
+            "demand_kwh": 90.1,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 6.26
+          },
+          {
+            "hour": 5,
+            "demand_kwh": 86.79,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 5.77
+          },
+          {
+            "hour": 6,
+            "demand_kwh": 92.74,
+            "solar_kwh": 1.55,
+            "tariff_bdt_per_kwh": 8.21
+          },
+          {
+            "hour": 7,
+            "demand_kwh": 96.59,
+            "solar_kwh": 5.6,
+            "tariff_bdt_per_kwh": 8.47
+          },
+          {
+            "hour": 8,
+            "demand_kwh": 91.19,
+            "solar_kwh": 28.07,
+            "tariff_bdt_per_kwh": 11.78
+          },
+          {
+            "hour": 9,
+            "demand_kwh": 95.25,
+            "solar_kwh": 56.47,
+            "tariff_bdt_per_kwh": 13.06
+          },
+          {
+            "hour": 10,
+            "demand_kwh": 93.37,
+            "solar_kwh": 112.25,
+            "tariff_bdt_per_kwh": 12.05
+          },
+          {
+            "hour": 11,
+            "demand_kwh": 93.97,
+            "solar_kwh": 155.03,
+            "tariff_bdt_per_kwh": 12.14
+          },
+          {
+            "hour": 12,
+            "demand_kwh": 96.53,
+            "solar_kwh": 199.32,
+            "tariff_bdt_per_kwh": 13.11
+          },
+          {
+            "hour": 13,
+            "demand_kwh": 95.55,
+            "solar_kwh": 204.44,
+            "tariff_bdt_per_kwh": 12.77
+          },
+          {
+            "hour": 14,
+            "demand_kwh": 96.41,
+            "solar_kwh": 156.11,
+            "tariff_bdt_per_kwh": 13.27
+          },
+          {
+            "hour": 15,
+            "demand_kwh": 93.9,
+            "solar_kwh": 109.83,
+            "tariff_bdt_per_kwh": 12.52
+          },
+          {
+            "hour": 16,
+            "demand_kwh": 89.15,
+            "solar_kwh": 56.52,
+            "tariff_bdt_per_kwh": 10.97
+          },
+          {
+            "hour": 17,
+            "demand_kwh": 100.66,
+            "solar_kwh": 24.6,
+            "tariff_bdt_per_kwh": 12.0
+          },
+          {
+            "hour": 18,
+            "demand_kwh": 96.69,
+            "solar_kwh": 12.77,
+            "tariff_bdt_per_kwh": 27.22
+          },
+          {
+            "hour": 19,
+            "demand_kwh": 97.68,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 27.71
+          },
+          {
+            "hour": 20,
+            "demand_kwh": 93.54,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 27.21
+          },
+          {
+            "hour": 21,
+            "demand_kwh": 90.91,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 27.03
+          },
+          {
+            "hour": 22,
+            "demand_kwh": 97.24,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 28.67
+          },
+          {
+            "hour": 23,
+            "demand_kwh": 82.43,
+            "solar_kwh": 0.0,
+            "tariff_bdt_per_kwh": 6.05
+          }
+        ],
+        "battery": {
+          "capacity_kwh": 257.8,
+          "initial_energy_kwh": 113.02,
+          "minimum_energy_kwh": 40.82,
+          "max_charge_kwh_per_hour": 49.29,
+          "max_discharge_kwh_per_hour": 49.29
+        }
+      }
+    }
+  ]
+}

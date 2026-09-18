@@ -1,0 +1,23 @@
+version: "3.9"
+
+# A minimal Docker Compose file: just the GridWise service.
+# Optional environment variables are read from .env (excluded from git).
+
+services:
+  gridwise:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: gridwise:latest
+    container_name: gridwise
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s

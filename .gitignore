@@ -1,0 +1,44 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+*.egg
+build/
+dist/
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.cache
+.venv/
+venv/
+env/
+
+# Distribution
+*.tar.gz
+
+# Editor
+.idea/
+.vscode/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+venv
+.env
+.env.local
+.env.*.local
+
+# Tests
+.pytest_cache/
+.hypothesis/
+
+# Generated data caches
+data/cache/

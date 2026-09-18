@@ -1,0 +1,2169 @@
+You are a senior backend engineer, LLM engineer, optimization engineer, and DevOps engineer.
+
+Build the complete **GridWise LLM-Assisted Smart Campus Energy Optimization API** from scratch as a production-quality hackathon submission.
+
+Do not assume that any problem-set files, public sample JSON, hidden tests, organizer code, or starter repository are available.
+
+The project must be fully functional even when the only available specification is the written challenge requirements described below.
+
+If official public sample files are later placed into the repository, the implementation must automatically support them without requiring architectural changes.
+
+Do not ask me for clarification unless the specification contains an actual contradiction that prevents implementation. Make reasonable engineering decisions while keeping challenge-defined behavior separate from implementation-specific behavior.
+
+# 1. PRIMARY OBJECTIVE
+
+Create one deployable HTTP service exposing exactly these main endpoints:
+
+GET /health
+
+POST /optimize-energy
+
+The service receives:
+
+* a scenario ID
+* 1-3 natural-language operator notes
+* 24 hourly demand values
+* 24 hourly solar forecasts
+* 24 hourly electricity tariffs
+* battery capacity/state/reserve/charge/discharge limits
+
+The service must:
+
+1. Interpret every operator note with a real language-capable generative model.
+2. Convert each note into exactly one supported structured directive or `no_op`.
+3. Deterministically validate the LLM output.
+4. Apply validated directives to the energy optimization model.
+5. Produce a valid 24-hour schedule.
+6. Minimize total grid electricity cost.
+7. Deterministically replay and validate its own returned schedule before returning it.
+8. Recalculate all reported totals from the final hourly plan.
+9. Return exactly one interpretation entry per operator note in order.
+10. Remain robust to paraphrased hidden notes.
+11. Handle missing official sample/problem files gracefully.
+12. Be locally runnable with a clean environment.
+13. Be Dockerized.
+14. Have comprehensive automated tests.
+15. Have a self-contained README.
+
+The architecture must explicitly follow:
+
+Natural-language operator notes
+↓
+LLM semantic interpretation
+↓
+Structured directive JSON
+↓
+Deterministic guardrails
+↓
+Validated directives
+↓
+Optimization model
+↓
+24-hour schedule
+↓
+Deterministic replay validator
+↓
+Final API response
+
+The LLM must be genuinely involved in producing `directive_interpretation`. Do not use an LLM merely to generate `plan_summary`.
+
+Do not implement hard-coded phrase matching as the sole interpretation mechanism.
+
+# 2. IMPORTANT IMPLEMENTATION PRINCIPLE
+
+Treat all LLM output as untrusted input.
+
+Never directly trust:
+
+* directive type
+* affected hours
+* percentages
+* energy reserve values
+* grid caps
+* note applicability
+* JSON structure
+
+The LLM may understand natural language, but deterministic code is responsible for deciding whether its output is structurally and numerically valid.
+
+The optimizer must never consume raw LLM output.
+
+Only validated structured directives may reach the optimizer.
+
+The completed schedule must also be deterministically replayed before returning it.
+
+# 3. TECHNOLOGY STACK
+
+Use the following stack unless there is a compelling technical reason to change it:
+
+Backend:
+
+* Python 3.12+
+* FastAPI
+* Uvicorn
+* Pydantic v2
+
+Optimization:
+
+* SciPy `optimize.milp` with HiGHS, OR another reliable MILP solver available through Python
+* NumPy
+
+Testing:
+
+* pytest
+* Hypothesis
+* httpx
+
+LLM:
+
+Implement a provider abstraction.
+
+At minimum support:
+
+* OpenAI-compatible API
+* optional local OpenAI-compatible endpoint such as Ollama/vLLM
+
+Use environment variables rather than hard-coding a provider.
+
+Example configuration:
+
+LLM_PROVIDER=openai_compatible
+LLM_BASE_URL=
+LLM_API_KEY=
+LLM_MODEL=
+LLM_TIMEOUT_SECONDS=12
+
+The exact variable names are your implementation choice, but they must be documented in `.env.example` and `README.md`.
+
+Do not commit secrets.
+
+# 4. PROJECT STRUCTURE
+
+Create a clean structure similar to:
+
+gridwise/
+├── app/
+│   ├── **init**.py
+│   ├── main.py
+│   ├── config.py
+│   ├── api/
+│   │   ├── **init**.py
+│   │   ├── health.py
+│   │   └── optimize.py
+│   ├── schemas/
+│   │   ├── **init**.py
+│   │   ├── request.py
+│   │   ├── response.py
+│   │   ├── directives.py
+│   │   └── llm.py
+│   ├── llm/
+│   │   ├── **init**.py
+│   │   ├── base.py
+│   │   ├── openai_compatible.py
+│   │   ├── mock.py
+│   │   ├── prompts.py
+│   │   └── interpreter.py
+│   ├── directives/
+│   │   ├── **init**.py
+│   │   ├── models.py
+│   │   ├── validator.py
+│   │   └── applier.py
+│   ├── optimization/
+│   │   ├── **init**.py
+│   │   ├── model.py
+│   │   ├── solver.py
+│   │   └── postprocess.py
+│   ├── validation/
+│   │   ├── **init**.py
+│   │   ├── replay.py
+│   │   ├── numerical.py
+│   │   └── response_validator.py
+│   └── services/
+│       ├── **init**.py
+│       └── optimize_service.py
+│
+├── tests/
+│   ├── unit/
+│   ├── integration/
+│   ├── property/
+│   ├── fixtures/
+│   └── test_public_samples.py
+│
+├── data/
+│   ├── generated_samples.json
+│   └── README.md
+│
+├── scripts/
+│   ├── generate_samples.py
+│   ├── validate_samples.py
+│   ├── replay_plan.py
+│   └── benchmark.py
+│
+├── Dockerfile
+├── docker-compose.yml
+├── .dockerignore
+├── .gitignore
+├── .env.example
+├── pyproject.toml
+├── README.md
+└── Makefile
+
+Do not create unnecessary frontend/dashboard components.
+
+The judging interface is the HTTP API.
+
+# 5. REQUEST SCHEMA
+
+POST /optimize-energy accepts one JSON object.
+
+Required top-level fields:
+
+```json
+{
+  "scenario_id": "GRID-001",
+  "operator_notes": [
+    "..."
+  ],
+  "hours": [
+    {
+      "hour": 0,
+      "demand_kwh": 180,
+      "solar_kwh": 0,
+      "tariff_bdt_per_kwh": 7
+    }
+  ],
+  "battery": {
+    "capacity_kwh": 500,
+    "initial_energy_kwh": 200,
+    "minimum_energy_kwh": 50,
+    "max_charge_kwh_per_hour": 100,
+    "max_discharge_kwh_per_hour": 100
+  }
+}
+```
+
+Validation requirements:
+
+* `scenario_id` must be a string.
+* `operator_notes` must contain 1-3 non-empty strings.
+* `hours` must contain exactly 24 entries.
+* Hour values must be unique integers from 0 through 23.
+* Hours must represent the complete 24-hour horizon.
+* `demand_kwh` must be finite and non-negative.
+* `solar_kwh` must be finite and non-negative.
+* `tariff_bdt_per_kwh` must be finite and non-negative.
+* Battery fields must be finite numeric values.
+* Do not silently modify supplied demand, solar, tariff, or battery parameters.
+* Reject malformed structural input with HTTP 400.
+* Semantically invalid input may use HTTP 422.
+* Internal controlled failures may use HTTP 500.
+* Never expose raw exception traces or secrets.
+
+Do not impose undocumented restrictions that could reject otherwise valid official scenarios.
+
+# 6. SUPPORTED DIRECTIVES
+
+The only valid directive types are:
+
+1. `solar_reduction`
+2. `minimum_battery_reserve`
+3. `no_charge_window`
+4. `no_discharge_window`
+5. `max_grid_window`
+6. `no_op`
+
+No other directive type is allowed.
+
+## solar_reduction
+
+Meaning:
+
+Reduce usable solar during specified hours.
+
+Schema:
+
+```json
+{
+  "hours": [13, 14],
+  "factor": 0.2
+}
+```
+
+Important:
+
+`factor` is the fraction of solar remaining.
+
+For example:
+
+* 100% remaining → `1.0`
+* 80% remaining → `0.8`
+* 50% reduction → `0.5`
+* 80% reduction → `0.2`
+* 20% remaining → `0.2`
+
+Never confuse percentage reduction with remaining fraction.
+
+Constraint:
+
+```text
+0 <= factor <= 1
+```
+
+Effective solar:
+
+```text
+effective_solar[h] = original_solar[h] * factor
+```
+
+for every affected hour.
+
+## minimum_battery_reserve
+
+Schema:
+
+```json
+{
+  "hours": [18, 19, 20],
+  "minimum_energy_kwh": 120
+}
+```
+
+During affected hours:
+
+```text
+battery_energy_after[h]
+    >= max(base_minimum_energy, directive_minimum_energy)
+```
+
+The reserve value must be:
+
+* finite
+* non-negative
+* no greater than battery capacity
+
+## no_charge_window
+
+Schema:
+
+```json
+{
+  "hours": [14, 15]
+}
+```
+
+During these hours:
+
+```text
+battery_charge = 0
+```
+
+## no_discharge_window
+
+Schema:
+
+```json
+{
+  "hours": [18, 19, 20]
+}
+```
+
+During these hours:
+
+```text
+battery_discharge = 0
+```
+
+## max_grid_window
+
+Schema:
+
+```json
+{
+  "hours": [17, 18],
+  "max_grid_kwh": 100
+}
+```
+
+During these hours:
+
+```text
+grid_kwh <= max_grid_kwh
+```
+
+The grid cap must be finite and non-negative.
+
+## no_op
+
+For notes irrelevant to the current 24-hour energy schedule:
+
+```json
+{
+  "applies": false,
+  "directive_type": "no_op",
+  "structured_adjustment": null
+}
+```
+
+All other directive types must have:
+
+```text
+applies = true
+```
+
+# 7. TIME INTERPRETATION
+
+Use whole-hour semantics.
+
+The start is inclusive.
+
+The end is exclusive.
+
+Examples:
+
+"1 PM to 3 PM"
+
+means:
+
+```text
+[13, 14]
+```
+
+not:
+
+```text
+[13, 14, 15]
+```
+
+"2 AM until 5 AM"
+
+means:
+
+```text
+[2, 3, 4]
+```
+
+"13:00-15:00"
+
+means:
+
+```text
+[13, 14]
+```
+
+The LLM must interpret natural-language time expressions into explicit integer hours.
+
+The deterministic guardrail must verify:
+
+* integer type
+* 0 <= hour <= 23
+* uniqueness
+* ascending ordering
+
+Do not permit duplicated hours.
+
+# 8. LLM INTERPRETATION DESIGN
+
+Make a single LLM call for all operator notes whenever possible.
+
+Do not make three independent model calls for three notes unless there is a strong reason.
+
+The LLM should receive:
+
+* the operator notes
+* the 24-hour planning-horizon definition
+* the supported directive ontology
+* precise interpretation rules
+* output schema
+* important examples
+* explicit instruction that unrelated operational/business notes must become `no_op`
+
+The LLM should NOT be asked to solve the energy optimization.
+
+Its responsibility is semantic interpretation only.
+
+The LLM output should look like:
+
+```json
+{
+  "directive_interpretation": [
+    {
+      "note_index": 0,
+      "applies": true,
+      "directive_type": "solar_reduction",
+      "structured_adjustment": {
+        "hours": [13, 14],
+        "factor": 0.2
+      },
+      "explanation": "Solar availability is reduced during the stated maintenance window."
+    }
+  ]
+}
+```
+
+The model should return one item per input note.
+
+No missing notes.
+
+No duplicate mappings.
+
+Correct `note_index` ordering.
+
+# 9. LLM PROMPTING REQUIREMENTS
+
+Create a dedicated system prompt in:
+
+`app/llm/prompts.py`
+
+The system prompt should make the following rules explicit:
+
+You are interpreting temporary operator instructions for today's 24-hour energy optimization.
+
+Only six directive types exist.
+
+Do not invent directives.
+
+Do not change demand.
+
+Do not change tariff.
+
+Do not change solar except through `solar_reduction`.
+
+Do not change battery capacity.
+
+Do not change battery starting energy.
+
+Do not change battery charge/discharge limits.
+
+Do not infer arbitrary energy policies from unrelated notes.
+
+If a note does not affect the current 24-hour energy schedule, return `no_op`.
+
+Interpret natural-language percentages carefully.
+
+Interpret time windows using start-inclusive/end-exclusive whole-hour semantics.
+
+Return structured JSON only.
+
+The optimizer will independently validate the result.
+
+Include semantic examples for:
+
+* solar reductions
+* battery reserve
+* no-charge windows
+* no-discharge windows
+* grid caps
+* unrelated distractor notes
+
+Do not build a giant keyword dictionary that replaces the LLM.
+
+It is acceptable to include normalization helpers for obvious formatting issues, but semantic interpretation must still come from the generative model.
+
+# 10. STRUCTURED LLM OUTPUT
+
+Prefer native structured output / JSON schema when the selected provider supports it.
+
+Define a strict Pydantic model such as:
+
+```python
+class LLMDirectiveInterpretation(BaseModel):
+    note_index: int
+    applies: bool
+    directive_type: Literal[
+        "solar_reduction",
+        "minimum_battery_reserve",
+        "no_charge_window",
+        "no_discharge_window",
+        "max_grid_window",
+        "no_op",
+    ]
+    structured_adjustment: dict | None
+    explanation: str
+```
+
+If the provider has no native JSON-schema support:
+
+1. request strict JSON
+2. parse JSON
+3. reject malformed output
+4. validate with Pydantic
+5. run semantic/deterministic guardrails
+
+Never silently manufacture missing values.
+
+# 11. DETERMINISTIC GUARDRAILS
+
+Create:
+
+`app/directives/validator.py`
+
+The validator must verify:
+
+## Coverage
+
+Every input note appears exactly once.
+
+Indices must be:
+
+```text
+0, 1, 2, ...
+```
+
+with no missing or duplicated index.
+
+## Allowed type
+
+Directive type must be one of the six allowed values.
+
+## applies semantics
+
+For `no_op`:
+
+```text
+applies == false
+structured_adjustment == null
+```
+
+For every other directive:
+
+```text
+applies == true
+structured_adjustment != null
+```
+
+## Hours
+
+All directive hours must be:
+
+* integers
+* 0-23
+* unique
+* ascending
+
+## solar reduction
+
+Validate:
+
+```text
+0 <= factor <= 1
+```
+
+## battery reserve
+
+Validate:
+
+```text
+0 <= reserve <= capacity
+```
+
+## grid cap
+
+Validate:
+
+```text
+0 <= max_grid_kwh
+```
+
+## No invention
+
+The interpretation must never alter:
+
+* demand
+* base solar
+* tariff
+* capacity
+* initial battery energy
+* base reserve
+* charge rate
+* discharge rate
+
+unless the directive ontology explicitly permits a modification.
+
+If the LLM produces unsupported or malformed structured data, fail safely.
+
+Do not reinterpret the LLM output using an undocumented fallback rule.
+
+# 12. DIRECTIVE APPLICATION
+
+Create:
+
+`app/directives/applier.py`
+
+Convert the validated interpretation into a deterministic optimization configuration.
+
+For example:
+
+```python
+EffectiveScenario(
+    effective_solar=[...],
+    active_minimum_reserve=[...],
+    no_charge_hours=set(...),
+    no_discharge_hours=set(...),
+    grid_caps={...}
+)
+```
+
+Keep this layer completely independent from the LLM provider.
+
+The optimizer should receive only typed deterministic configuration.
+
+Do not pass raw natural-language notes to the optimizer.
+
+# 13. OPTIMIZATION MODEL
+
+Create a mathematical optimization model for 24 hours.
+
+For each hour h define:
+
+```text
+grid[h] >= 0
+solar_used[h] >= 0
+charge[h] >= 0
+discharge[h] >= 0
+energy[h] >= 0
+```
+
+Also enforce mutually exclusive battery actions.
+
+Use binary variables or an equivalent exact formulation so that the returned schedule cannot simultaneously charge and discharge the battery in the same hour.
+
+Use:
+
+```text
+charge[h] <= max_charge_per_hour * charge_mode[h]
+
+discharge[h] <= max_discharge_per_hour * discharge_mode[h]
+
+charge_mode[h] + discharge_mode[h] <= 1
+```
+
+where appropriate.
+
+# 14. ENERGY BALANCE
+
+Every hour must satisfy exactly:
+
+```text
+grid_kwh
++ solar_used_kwh
++ battery_discharge_kwh
+=
+demand_kwh
++ battery_charge_kwh
+```
+
+Do not allow energy creation or disappearance.
+
+Do not allow negative grid energy.
+
+Do not allow grid export.
+
+Unused solar is curtailed.
+
+# 15. SOLAR CONSTRAINT
+
+For each hour:
+
+```text
+0 <= solar_used[h] <= effective_solar[h]
+```
+
+where:
+
+```text
+effective_solar[h]
+=
+original_solar[h]
+```
+
+unless a `solar_reduction` directive affects that hour.
+
+For affected hours:
+
+```text
+effective_solar[h]
+=
+original_solar[h] * factor
+```
+
+Do not allow solar use above the reduced amount.
+
+# 16. BATTERY STATE TRANSITION
+
+For each hour:
+
+If charging:
+
+```text
+E_after = E_before + charge
+```
+
+If discharging:
+
+```text
+E_after = E_before - discharge
+```
+
+If idle:
+
+```text
+E_after = E_before
+```
+
+For idle:
+
+```text
+battery_kwh = 0
+```
+
+The optimizer must preserve the battery state across all 24 hours.
+
+# 17. BATTERY BOUNDS
+
+For every hour:
+
+```text
+minimum_energy_kwh <= battery_energy_after <= capacity_kwh
+```
+
+If a `minimum_battery_reserve` directive is active:
+
+```text
+battery_energy_after
+>= max(base_minimum_energy, directive_reserve)
+```
+
+Charge must obey:
+
+```text
+charge <= max_charge_kwh_per_hour
+```
+
+Discharge must obey:
+
+```text
+discharge <= max_discharge_kwh_per_hour
+```
+
+# 18. END-OF-DAY NEUTRALITY
+
+At hour 23:
+
+```text
+battery_energy_after[23]
+=
+initial_energy_kwh
+```
+
+Do not let the optimizer exploit the starting battery as free energy.
+
+This is mandatory.
+
+# 19. GRID CAP
+
+For an active `max_grid_window`:
+
+```text
+grid[h] <= max_grid_kwh
+```
+
+for every affected hour.
+
+This must be a hard optimization constraint.
+
+Do not merely mention the constraint in `plan_summary`.
+
+# 20. NO-CHARGE / NO-DISCHARGE
+
+For `no_charge_window`:
+
+```text
+charge[h] = 0
+```
+
+For `no_discharge_window`:
+
+```text
+discharge[h] = 0
+```
+
+Do not rely on the solver naturally choosing zero; explicitly constrain it.
+
+# 21. OBJECTIVE
+
+After all directives have been applied, minimize:
+
+```text
+total_cost_bdt
+=
+sum(
+    grid_kwh[h] * tariff_bdt_per_kwh[h]
+)
+```
+
+for h = 0..23.
+
+The optimizer should optimize grid electricity cost, not merely grid energy.
+
+A higher-tariff hour should generally be avoided when another feasible source is available, but let the mathematical model determine the actual schedule.
+
+Do not implement a greedy "use battery during expensive hours" heuristic as the primary solver.
+
+Use a real optimization model.
+
+# 22. IMPORTANT OPTIMIZATION EDGE CASE
+
+Do not accidentally create artificial arbitrage from simultaneous charging and discharging.
+
+The model must prevent both actions from being positive in the same hour.
+
+Use exact solver constraints rather than a fragile post-processing fix.
+
+If the optimization result is numerically imperfect, validate and normalize it using a very small tolerance, then replay it.
+
+Never modify a schedule in post-processing in a way that changes its feasibility without revalidation.
+
+# 23. RESPONSE SCHEMA
+
+Successful POST /optimize-energy must return:
+
+```json
+{
+  "scenario_id": "GRID-001",
+  "directive_interpretation": [],
+  "hourly_plan": [],
+  "total_grid_kwh": 0,
+  "total_cost_bdt": 0,
+  "peak_grid_kwh": 0,
+  "plan_summary": "..."
+}
+```
+
+`scenario_id` must exactly match the request.
+
+`directive_interpretation` must contain exactly one entry per operator note.
+
+`hourly_plan` must contain exactly 24 entries.
+
+# 24. DIRECTIVE INTERPRETATION RESPONSE
+
+Each entry must contain:
+
+```json
+{
+  "note_index": 0,
+  "applies": true,
+  "directive_type": "solar_reduction",
+  "structured_adjustment": {
+    "hours": [13, 14],
+    "factor": 0.2
+  },
+  "explanation": "..."
+}
+```
+
+For no-op:
+
+```json
+{
+  "note_index": 1,
+  "applies": false,
+  "directive_type": "no_op",
+  "structured_adjustment": null,
+  "explanation": "This note does not affect the current energy schedule."
+}
+```
+
+Free-text explanation does not need byte-for-byte matching with any reference.
+
+The structured fields are what matter.
+
+# 25. HOURLY PLAN
+
+Each hour must contain:
+
+```json
+{
+  "hour": 0,
+  "grid_kwh": 0,
+  "solar_used_kwh": 0,
+  "battery_action": "idle",
+  "battery_kwh": 0,
+  "battery_energy_after_kwh": 0
+}
+```
+
+`battery_action` must be one of:
+
+* `charge`
+* `discharge`
+* `idle`
+
+For idle:
+
+```text
+battery_kwh = 0
+```
+
+All energy values must be non-negative.
+
+# 26. TOTALS
+
+Never trust solver metadata for the API totals.
+
+Recalculate totals from the final returned hourly plan.
+
+Calculate:
+
+```text
+total_grid_kwh
+=
+sum(hour.grid_kwh)
+```
+
+```text
+total_cost_bdt
+=
+sum(
+    hour.grid_kwh * input_hour.tariff_bdt_per_kwh
+)
+```
+
+```text
+peak_grid_kwh
+=
+max(hour.grid_kwh)
+```
+
+Return the recalculated values.
+
+Do not calculate totals from an earlier unrounded schedule and return them alongside a rounded schedule if that could cause inconsistency.
+
+# 27. FINAL REPLAY VALIDATOR
+
+Create:
+
+`app/validation/replay.py`
+
+This is one of the most important components.
+
+After optimization:
+
+1. Replay hour 0.
+2. Compute the battery state.
+3. Check effective solar.
+4. Check directive-specific constraints.
+5. Check energy balance.
+6. Continue through hour 23.
+7. Verify end-of-day battery neutrality.
+8. Recalculate total grid.
+9. Recalculate total cost.
+10. Recalculate peak grid.
+
+The replay validator must independently reconstruct the schedule's validity.
+
+The API must return a successful optimization result only if replay validation passes.
+
+Implement a structured validation result such as:
+
+```python
+ValidationResult(
+    valid=True,
+    errors=[],
+    warnings=[]
+)
+```
+
+If replay fails unexpectedly, return a controlled server error and log the safe diagnostic message without secrets.
+
+# 28. FLOATING-POINT HANDLING
+
+Use floating-point tolerances carefully.
+
+The challenge uses approximately 0.01 kWh / 0.01 BDT tolerance.
+
+Internally:
+
+* use reasonable numerical precision
+* avoid repeated rounding
+* use a central tolerance constant
+* validate using absolute tolerance
+
+Do not round every intermediate computation.
+
+Round only when producing the final external JSON.
+
+After final rounding, replay the rounded schedule again.
+
+If rounding causes a violation, correct the representation and revalidate rather than returning invalid output.
+
+Never return `-0.0`.
+
+Normalize tiny values to `0.0`.
+
+# 29. LLM PROVIDER ABSTRACTION
+
+Implement:
+
+```python
+class LLMInterpreter(Protocol):
+    async def interpret(
+        self,
+        notes: list[str],
+        horizon: ...,
+        context: ...
+    ) -> ...
+```
+
+Then implement:
+
+* `OpenAICompatibleInterpreter`
+* `MockInterpreter`
+
+The mock interpreter exists only for local automated tests.
+
+It must NOT be the production default.
+
+Production configuration must require a real generative model.
+
+The README must clearly state this.
+
+# 30. MOCK LLM
+
+The mock interpreter should allow the entire project to be tested without an API key.
+
+It may use explicit fixture mappings in unit tests.
+
+It must never be presented as satisfying the challenge's real LLM requirement.
+
+For integration tests:
+
+```text
+LLM_PROVIDER=mock
+```
+
+is acceptable.
+
+For production:
+
+```text
+LLM_PROVIDER != mock
+```
+
+must be required.
+
+# 31. MODEL FAILURE HANDLING
+
+If the LLM returns:
+
+* invalid JSON
+* missing fields
+* unsupported directive
+* duplicated note index
+* invalid hour
+* invalid numeric value
+* out-of-range factor
+
+do not invent an answer.
+
+Return a controlled failure.
+
+Do not silently convert an invalid model response into an unrelated no-op.
+
+Do not crash the server.
+
+Do not expose raw provider errors, API keys, or stack traces.
+
+# 32. PERFORMANCE
+
+The service should be designed for:
+
+* GET /health ready within 60 seconds of startup
+* POST /optimize-energy within 30 seconds
+* target p95 latency <= 5 seconds where practical
+
+Optimize the architecture for low latency:
+
+* one LLM call per scenario
+* small structured prompt
+* no unnecessary LLM calls
+* reused HTTP connections
+* reasonable provider timeout
+* efficient solver model
+* no repeated optimization passes unless required for validation
+* lightweight replay validation
+* optional bounded in-memory cache for identical interpretation requests
+
+Do not trade correctness for latency.
+
+# 33. CACHING
+
+A small optional LRU/TTL cache may be implemented for repeated identical operator-note interpretation requests.
+
+Cache keys should include at least:
+
+* normalized notes
+* interpreter model identifier
+* relevant interpretation version/prompt version
+
+Never cache optimization results solely by `scenario_id`.
+
+Scenario data matters.
+
+Do not let cache state affect correctness.
+
+# 34. PUBLIC SAMPLE FILE SUPPORT
+
+The official public sample JSON may not exist when development begins.
+
+Therefore create:
+
+`data/generated_samples.json`
+
+containing your own synthetic cases.
+
+These are clearly labeled:
+
+```text
+SELF-GENERATED TEST CASE
+NOT OFFICIAL ORGANIZER SAMPLE
+```
+
+Generate cases covering at least:
+
+1. solar reduction
+2. minimum battery reserve
+3. no-charge window
+4. no-discharge window
+5. max-grid window
+6. no-op/distractor
+7. two relevant notes
+8. three notes with one distractor
+9. different tariff patterns
+10. different battery states
+11. different solar profiles
+12. decimal numeric values
+13. multiple paraphrased notes
+
+Do not copy the official sample outputs into the algorithm.
+
+# 35. OFFICIAL SAMPLE FILE AUTO-DISCOVERY
+
+When official files become available, support these optional locations:
+
+```text
+data/public_samples.json
+data/BUP_CSE_FEST_2026_Preli_Public_Sample_Cases.json
+```
+
+Also allow a CLI argument:
+
+```bash
+python scripts/validate_samples.py \
+    --file path/to/public_samples.json
+```
+
+The validator should:
+
+1. load every official sample
+2. POST the input to local `/optimize-energy`
+3. verify response schema
+4. compare directive interpretation
+5. replay the plan
+6. verify totals
+7. verify cost against the official reference within allowed tolerance
+8. report failures clearly
+
+Do not assume the official reference schedule is unique.
+
+The official challenge accepts equivalent optimal schedules.
+
+# 36. TEST SUITE
+
+Build a serious automated test suite.
+
+## Unit tests
+
+Test:
+
+* request validation
+* directive parsing model
+* directive guardrails
+* solar reduction
+* reserve application
+* no-charge application
+* no-discharge application
+* grid cap
+* no-op
+* time-window interpretation of structured data
+* energy balance
+* battery transitions
+* final neutrality
+* totals
+* response schema
+
+## Integration tests
+
+Test:
+
+* GET /health
+* valid POST /optimize-energy
+* malformed JSON
+* invalid hours
+* duplicate note mappings
+* invalid LLM JSON
+* unsupported directive type
+* invalid factor
+* invalid reserve
+* invalid grid cap
+* infeasible optimization
+* solver failure
+* model timeout
+* repeated requests
+
+## Property-based tests
+
+Use Hypothesis to generate random feasible 24-hour scenarios.
+
+For each generated scenario:
+
+1. generate demand
+2. generate solar
+3. generate tariff
+4. generate battery parameters
+5. create valid directives
+6. run optimizer
+7. replay the result
+
+Assert:
+
+```text
+hours == [0..23]
+grid >= 0
+solar_used >= 0
+charge/discharge >= 0
+solar_used <= effective_solar
+battery stays within bounds
+energy balance holds
+charge/discharge limits hold
+directives hold
+final energy == initial energy
+reported totals == recalculated totals
+```
+
+This test suite is extremely important because official hidden files are unavailable.
+
+# 37. SYNTHETIC HIDDEN-STYLE TESTS
+
+Create a test set specifically designed to emulate hidden evaluation.
+
+Use paraphrases such as:
+
+Solar reduction:
+
+* "PV production will fall to one-fifth between 13:00 and 15:00."
+* "Panel maintenance means only 20% of normal solar should be counted from 1 PM through 2 PM."
+* "Expect an 80 percent decrease in rooftop generation during 1-3 PM."
+
+Battery reserve:
+
+* "Keep at least 120 kWh stored from 6 PM to 9 PM."
+* "The battery must retain a minimum of 120 units through the evening peak."
+* "Do not allow battery energy below 120 kWh during hours 18 through 20."
+
+No-charge:
+
+* "Battery charging is unavailable from 2 PM to 4 PM."
+* "Do not replenish the storage unit during hours 14 and 15."
+
+No-discharge:
+
+* "Keep the battery from discharging between 6 PM and 8 PM."
+* "Storage discharge must remain disabled during hours 18-19."
+
+Grid cap:
+
+* "Grid import must stay at or below 100 kWh during 5-7 PM."
+* "Do not draw more than 100 kWh from the utility during hours 17 and 18."
+
+No-op:
+
+* "The cafeteria menu has changed next week."
+* "The registration deadline moved to next month."
+* "The sports department updated its event calendar."
+
+The model must distinguish schedule-relevant statements from realistic distractors.
+
+# 38. DO NOT HARD-CODE SAMPLE PHRASES
+
+Do not implement:
+
+```python
+if "panel cleaning" in note:
+    ...
+```
+
+as the primary solution.
+
+Do not implement a long list of exact public phrases.
+
+Hidden notes may express the same directive differently.
+
+The core architecture must depend on semantic LLM interpretation.
+
+Deterministic code should validate the resulting structure, not replace semantic understanding.
+
+# 39. OPTIMIZER IMPLEMENTATION DETAILS
+
+Create a reusable optimization engine:
+
+```python
+class EnergyOptimizer:
+    def optimize(
+        self,
+        scenario: EnergyScenario,
+        directives: EffectiveDirectives,
+    ) -> OptimizationResult:
+        ...
+```
+
+The optimizer should:
+
+1. construct variables
+2. add energy-balance constraints
+3. add battery transition constraints
+4. add battery bounds
+5. add charge/discharge limits
+6. add action exclusivity
+7. add effective-solar constraints
+8. add no-charge constraints
+9. add no-discharge constraints
+10. add grid caps
+11. add final-energy equality
+12. minimize grid cost
+13. extract solution
+14. convert to the API schedule representation
+
+Keep the optimizer completely independent of FastAPI.
+
+# 40. RESPONSE POST-PROCESSING
+
+Create a separate post-processing stage.
+
+Responsibilities:
+
+* normalize tiny numerical values
+* select battery_action
+* construct hourly plan objects
+* recalculate totals
+* generate concise plan summary
+* replay final schedule
+* reject invalid output
+
+Do not let the LLM generate:
+
+* grid values
+* battery schedule
+* total cost
+* total grid energy
+* peak grid
+
+Those values must come from the deterministic optimizer.
+
+# 41. PLAN SUMMARY
+
+`plan_summary` should be short and human readable.
+
+It may say things such as:
+
+"The schedule uses available solar first, shifts battery energy toward higher-tariff periods, respects the maintenance reserve window, and restores the initial battery level by hour 23."
+
+Do not allow the LLM to generate this field if it could introduce inconsistency.
+
+Generate it deterministically from the applied directives and resulting schedule.
+
+# 42. HEALTH ENDPOINT
+
+Implement:
+
+```http
+GET /health
+```
+
+Successful response:
+
+```json
+{
+  "status": "ok"
+}
+```
+
+Return HTTP 200.
+
+Do not require authentication.
+
+Do not call the LLM just to answer `/health`.
+
+# 43. API ERROR DESIGN
+
+Implement controlled JSON errors.
+
+Example:
+
+```json
+{
+  "detail": "Invalid request: hours must contain exactly 24 unique entries from 0 through 23."
+}
+```
+
+Never include:
+
+* stack traces
+* API keys
+* Authorization headers
+* raw provider requests
+* secret environment variables
+
+# 44. LOGGING
+
+Use structured logs.
+
+Log safe information such as:
+
+* request received
+* scenario ID
+* optimization duration
+* LLM duration
+* solver duration
+* final cost
+* validation status
+
+Do not log:
+
+* API keys
+* authorization tokens
+* full prompts containing secrets
+* raw model credentials
+* unnecessary sensitive payloads
+
+When possible, truncate or hash scenario IDs in verbose logs.
+
+# 45. SECURITY
+
+Implement:
+
+* `.env` in `.gitignore`
+* `.env.example`
+* no credentials in source
+* no credentials in Docker image
+* no credentials in README
+* no credentials in test fixtures
+* controlled exception handling
+* dependency pinning
+* non-root Docker user if practical
+
+# 46. DOCKER
+
+Create a production-ready `Dockerfile`.
+
+Requirements:
+
+* listen on `0.0.0.0`
+* configurable port
+* no hard-coded secret
+* deterministic dependency installation
+* small reasonable image
+* healthcheck
+* non-root execution where practical
+
+Example execution:
+
+```bash
+docker build -t gridwise:latest .
+docker run --rm \
+  -p 8000:8000 \
+  --env-file .env \
+  gridwise:latest
+```
+
+Verify:
+
+```bash
+curl http://localhost:8000/health
+```
+
+# 47. DOCKER COMPOSE
+
+Provide an optional `docker-compose.yml`.
+
+Do not require a database.
+
+Do not add Redis, PostgreSQL, Kafka, or other infrastructure unless it has a real purpose.
+
+This challenge is fundamentally:
+
+LLM + deterministic validation + optimization.
+
+Keep deployment simple.
+
+# 48. README
+
+Write an excellent self-contained README.
+
+It must contain:
+
+## Project overview
+
+Explain the problem in plain language.
+
+## Architecture
+
+Show:
+
+```text
+POST request
+   ↓
+Pydantic validation
+   ↓
+LLM interpretation
+   ↓
+Directive guardrails
+   ↓
+Directive application
+   ↓
+MILP optimizer
+   ↓
+Replay validator
+   ↓
+Response
+```
+
+## Setup
+
+```bash
+git clone ...
+cd ...
+python -m venv .venv
+source .venv/bin/activate
+pip install -e .
+```
+
+## Environment variables
+
+Explain every required variable.
+
+Never include real secrets.
+
+## Run locally
+
+```bash
+uvicorn app.main:app --host 0.0.0.0 --port 8000
+```
+
+## Health test
+
+```bash
+curl http://localhost:8000/health
+```
+
+## Optimization request
+
+Provide a complete sample request.
+
+## Test suite
+
+```bash
+pytest
+```
+
+## Public sample validation
+
+Document how to run it if official sample files are available.
+
+## Docker
+
+Provide exact build/pull/run commands.
+
+## LLM architecture
+
+Explain why the LLM is required and exactly where it participates.
+
+## Guardrails
+
+Explain deterministic validation.
+
+## Optimizer
+
+Explain the mathematical model.
+
+## Known limitations
+
+Be honest.
+
+# 49. MAKEFILE
+
+Create convenient commands:
+
+```text
+make install
+make test
+make lint
+make run
+make docker-build
+make docker-run
+make sample-test
+make benchmark
+```
+
+Do not make these commands depend on undocumented local files.
+
+# 50. GENERATED SAMPLE DESIGN
+
+The repository must remain usable even if no organizer files are available.
+
+`generate_samples.py` should generate deterministic synthetic data using a fixed random seed.
+
+The generated cases should have realistic:
+
+* demand curves
+* solar curves
+* tariffs
+* battery capacity
+* starting energy
+* reserve
+* charge limits
+* discharge limits
+
+At least one case should test each directive.
+
+At least one case should include a distractor.
+
+At least one case should contain decimal values.
+
+At least one case should contain multiple applicable directives.
+
+At least one case should contain three notes.
+
+Do not call these cases official.
+
+# 51. BENCHMARK SCRIPT
+
+Create:
+
+```bash
+python scripts/benchmark.py
+```
+
+It should measure:
+
+* LLM interpretation latency
+* optimization latency
+* total request latency
+* validation latency
+
+If mock LLM is used, clearly label results as local/mock benchmarks.
+
+# 52. OFFICIAL FILE ABSENCE
+
+This requirement is critical.
+
+The project must NOT crash or become incomplete because these files are missing:
+
+* public sample cases
+* organizer test files
+* hidden cases
+* problem-set JSON
+
+When official files are missing:
+
+* run generated tests
+* run property tests
+* run synthetic hidden-style paraphrases
+* run optimizer tests
+* run replay tests
+* run API integration tests
+
+When official files are present:
+
+* automatically detect them
+* add their cases to the test/validation pipeline
+* never replace the core architecture with sample-specific logic
+
+# 53. DO NOT USE HIDDEN-TEST ASSUMPTIONS
+
+Do not assume:
+
+* specific scenario IDs
+* specific public note wording
+* fixed numeric values
+* fixed sample schedules
+* a specific battery size
+* a specific tariff pattern
+* a fixed solar curve
+
+The implementation must work from the request data.
+
+# 54. DO NOT RETURN REFERENCE SCHEDULES
+
+Never hard-code official reference schedules.
+
+The optimizer must produce the schedule mathematically.
+
+Equivalent optimal schedules are acceptable, so the implementation should optimize the actual supplied scenario.
+
+# 55. OFFICIAL SAMPLE VALIDATION
+
+When official sample output is available, use it to validate:
+
+* directive interpretation
+* directive application
+* schedule validity
+* cost
+* totals
+
+Do not compare the returned hourly action sequence byte-for-byte unless the challenge explicitly requires it.
+
+An equivalent optimal solution should be considered valid.
+
+# 56. NUMERICAL REPLAY
+
+Build a single canonical replay function and use it for:
+
+* automated tests
+* API response validation
+* public sample validation
+* debugging
+* benchmark validation
+
+Avoid duplicating energy-balance logic in five different places.
+
+The same canonical semantics should govern both optimization validation and sample testing.
+
+# 57. INTERNAL DOMAIN MODELS
+
+Create explicit typed models for:
+
+```text
+EnergyHour
+BatteryConfig
+EnergyScenario
+SolarReductionDirective
+BatteryReserveDirective
+NoChargeDirective
+NoDischargeDirective
+GridCapDirective
+NoOpDirective
+ValidatedDirectiveSet
+EffectiveScenario
+HourlyPlan
+OptimizationResult
+ReplayResult
+```
+
+Avoid passing untyped dictionaries throughout the entire application.
+
+Use dictionaries only at clear external boundaries.
+
+# 58. CODE QUALITY
+
+Requirements:
+
+* type hints
+* docstrings on important public classes/functions
+* small cohesive modules
+* meaningful names
+* no giant `main.py`
+* no global mutable state
+* dependency injection where appropriate
+* deterministic tests
+* centralized configuration
+* centralized numerical tolerance
+
+Avoid overengineering.
+
+# 59. LLM PROMPT VERSIONING
+
+Define an explicit prompt version:
+
+```python
+INTERPRETER_PROMPT_VERSION = "1.0"
+```
+
+Include it in logs and cache keys.
+
+This makes future prompt changes traceable.
+
+# 60. OBSERVABILITY
+
+Measure:
+
+```text
+llm_latency_ms
+optimization_latency_ms
+validation_latency_ms
+total_latency_ms
+```
+
+Do not expose them in the official response unless desired for debugging; keep the public API contract minimal.
+
+# 61. MODEL RESPONSE NORMALIZATION
+
+If the provider returns:
+
+````text
+```json
+{...}
+````
+
+````
+
+you may remove the surrounding code fence before JSON parsing.
+
+But do not use aggressive heuristic extraction that might accidentally convert malformed model output into a valid-looking directive.
+
+If parsing fails, fail safely.
+
+# 62. LLM CONTEXT
+
+The LLM should know that:
+
+- the scenario concerns the current 24-hour horizon
+- times refer to hours 0-23
+- unrelated future events should usually be `no_op`
+- it cannot invent constraints
+- only supported directive types exist
+
+If a note says something like:
+
+"The cafeteria menu will change next month."
+
+it should become `no_op`.
+
+If a note says:
+
+"Panel washing from 1 PM to 3 PM will leave 20% of normal solar."
+
+it should become:
+
+```text
+solar_reduction
+hours = [13,14]
+factor = 0.2
+````
+
+# 63. MULTIPLE NOTES
+
+If there are three notes:
+
+```text
+note 0 -> applicable
+note 1 -> no_op
+note 2 -> applicable
+```
+
+the response must contain:
+
+```text
+note_index 0
+note_index 1
+note_index 2
+```
+
+in exactly that order.
+
+No omissions.
+
+# 64. CONFLICTS
+
+Official judging scenarios are expected to be feasible and not require contradictory hard constraints.
+
+Still, implement conflict detection where it can be done deterministically.
+
+Examples:
+
+* impossible grid cap
+* reserve above battery capacity
+* impossible battery state
+* contradictory same-hour charge/discharge windows if they cannot be satisfied
+
+Do not invent a precedence rule unless the specification explicitly defines one.
+
+If a supplied request is infeasible, return a controlled error.
+
+Do not silently weaken a directive.
+
+# 65. OPTIMIZATION INFEASIBILITY
+
+If the solver reports infeasible:
+
+Return a controlled error response.
+
+Do not:
+
+* ignore directives
+* lower reserves
+* remove grid caps
+* increase battery capacity
+* invent solar
+* modify demand
+
+The optimizer must preserve the input semantics.
+
+# 66. API SERVICE LIFECYCLE
+
+On startup:
+
+1. load configuration
+2. initialize LLM provider
+3. initialize optimizer configuration
+4. initialize logging
+5. start FastAPI
+6. expose `/health`
+
+Avoid expensive optimization/model calls during startup.
+
+# 67. CONCURRENCY
+
+FastAPI endpoints should be safe under repeated requests.
+
+Do not use mutable global scenario state.
+
+Every optimization request should construct isolated state.
+
+A cache, if used, must be concurrency-safe.
+
+# 68. TEST COMMANDS
+
+The project should pass:
+
+```bash
+pytest -q
+```
+
+and ideally:
+
+```bash
+pytest tests/unit -q
+pytest tests/integration -q
+pytest tests/property -q
+```
+
+Create an API smoke test:
+
+```bash
+curl http://localhost:8000/health
+```
+
+Then:
+
+```bash
+curl -X POST http://localhost:8000/optimize-energy \
+  -H "Content-Type: application/json" \
+  -d @data/example_request.json
+```
+
+Create `data/example_request.json`.
+
+# 69. ACCEPTANCE CRITERIA
+
+Do not consider the project complete until all of the following are true:
+
+1. `/health` returns HTTP 200 and `{"status":"ok"}`.
+2. `/optimize-energy` accepts a valid 24-hour scenario.
+3. Every operator note gets exactly one interpretation.
+4. LLM interpretation is actually part of the production path.
+5. Unsupported directives are rejected.
+6. `no_op` semantics are correct.
+7. Hours are validated as unique ascending integers 0-23.
+8. Solar reductions are correctly applied.
+9. Battery reserves are correctly applied.
+10. No-charge windows are enforced.
+11. No-discharge windows are enforced.
+12. Grid caps are enforced.
+13. Energy balance passes for every hour.
+14. Battery never violates capacity/reserve.
+15. Battery charge/discharge limits are obeyed.
+16. Simultaneous charge/discharge is impossible.
+17. Final battery energy equals initial battery energy.
+18. All grid energy is non-negative.
+19. Solar usage does not exceed effective solar.
+20. Totals match the final hourly plan.
+21. The final plan passes canonical replay validation.
+22. Generated synthetic tests pass.
+23. Property-based tests pass.
+24. Official public samples are supported when present.
+25. No official files are required for the project to build and test.
+26. Docker image starts successfully.
+27. Service binds to `0.0.0.0`.
+28. No secrets are committed.
+29. README contains complete setup instructions.
+30. Production mode does not silently use the mock LLM.
+
+# 70. FINAL ENGINEERING CHECK
+
+Before declaring the project finished, inspect the whole repository and ask:
+
+* Is any official behavior hard-coded?
+* Is any exact sample phrase hard-coded as the main interpretation method?
+* Can the optimizer run without the LLM interpretation?
+* Can invalid LLM output reach the optimizer?
+* Can a directive be correctly interpreted but not applied?
+* Can battery energy finish below its initial state?
+* Can battery charge and discharge simultaneously?
+* Can solar usage exceed reduced solar?
+* Can a grid cap be violated?
+* Can totals disagree with the returned hourly plan?
+* Can one operator note disappear from the interpretation?
+* Can a note appear twice?
+* Can the service crash on malformed model output?
+* Can secrets leak into logs?
+* Can the service run without official sample files?
+* Can an organizer start the service from the README without asking the developers for help?
+
+Fix every issue you find.
+
+# 71. FINAL OUTPUT EXPECTED FROM YOU
+
+After implementation, provide:
+
+1. complete source tree
+2. all source files
+3. tests
+4. generated synthetic sample data
+5. Dockerfile
+6. docker-compose.yml
+7. `.env.example`
+8. README
+9. Makefile
+10. example API request
+11. test commands
+12. benchmark command
+
+Then run the test suite.
+
+Report:
+
+```text
+Implementation status
+Test status
+Docker status
+Health endpoint status
+Sample-test status
+Known limitations
+```
+
+Do not claim official sample compatibility was verified if the official sample files were not available.
+
+If the official files are missing, explicitly say:
+
+"Official sample files were not available; synthetic and property-based validation was used."
+
+The goal is a complete, reproducible, technically defensible GridWise solution that can later consume the organizer's public sample cases without changing the architecture.
+
+Most importantly, maintain the following invariant throughout the implementation:
+
+LLM understands the operator language.
+Deterministic code decides whether that interpretation is valid.
+The optimizer decides the cheapest valid schedule.
+The replay validator decides whether the returned schedule is actually valid.
+
+Do not collapse these responsibilities into one component.
